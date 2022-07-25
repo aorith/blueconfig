@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu
+set -eu -o pipefail
 cd "$(dirname -- "$0")" || exit 1
 
 gnome_shell_ver=$(gnome-shell --version | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | xargs)
