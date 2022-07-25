@@ -23,6 +23,9 @@ filesystem_mounts:
   - { src: "LABEL=DISK1", path: "/var/home/aorith/storage/disk1", fstype: "ext4",  opts: "defaults,noatime",         state: "mounted", dump: '0', passno: '2' }
   - { src: "LABEL=DISK2", path: "/var/home/aorith/storage/disk2", fstype: "ext4",  opts: "defaults,noatime",         state: "mounted", dump: '0', passno: '2' }
 
+filesystem_symlinks:
+  - { link_src: "/var/home/aorith/storage/tank/data/syncthing", dest: "/var/home/aorith/Syncthing" }
+
 # OsTree role
 # --------------------------------------------------
 run_ostree_role: yes

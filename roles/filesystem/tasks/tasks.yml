@@ -20,3 +20,11 @@
     passno: "{{ item.passno }}"
   loop: "{{ filesystem_mounts }}"
   become: yes
+
+- name: Create required symlinks
+  ansible.builtin.file:
+    src: "{{ item.link_src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  loop: "{{ filesystem_symlinks }}"
+  become: yes
