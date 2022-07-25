@@ -1,0 +1,35 @@
+# vim: ft=systemd
+
+[Unit]
+Description=Syncthing
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/run/user/1000/containers
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Environment=SYNCTHING_IMAGE=docker.io/syncthing/syncthing:latest
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=70
+
+ExecStartPre=-/usr/bin/podman pull ${SYNCTHING_IMAGE}
+ExecStartPre=-/usr/bin/podman stop -t 10 syncthing
+ExecStartPre=-/usr/bin/podman rm syncthing
+
+ExecStart=/usr/bin/podman run \
+          --rm \
+          --name=syncthing \
+          --label=io.containers.autoupdate=registry \
+          --user={{ common_user.uid }}:{{ common_user.gid }} \
+          --userns=keep-id \
+          --network=host \
+          -v {{ common_user.home }}/storage/tank/data/syncthing:/data1:Z \
+          -v {{ common_user.home }}/storage/tank/data/syncthing/_config/syncthing:/config:Z \
+          ${SYNCTHING_IMAGE} \
+          -no-browser -no-restart -logflags=0 --home /config
+
+ExecStop=-/usr/bin/podman stop -t 10 syncthing
+
+[Install]
+WantedBy=default.target

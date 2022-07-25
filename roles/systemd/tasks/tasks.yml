@@ -1,0 +1,42 @@
+---
+- name:
+  ansible.builtin.file:
+    path: ~/.config/systemd/user
+    state: directory
+
+- name: Copy systemd unit files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ common_user.home }}/.config/systemd/user/{{ item.dest }}"
+  loop: "{{ systemd_user.templates }}" 
+
+- name: Reload Systemd
+  ansible.builtin.systemd:
+    daemon_reload: yes
+    scope: user
+
+- name: Enable Syncthing service
+  ansible.builtin.systemd:
+    name: syncthing
+    state: started
+    enabled: yes
+    scope: user
+  when: systemd_user.syncthing.enable
+
+# To allow for systemd services to be started at boot without login (and continue running after logout) of the individual users, you need to enable lingering. You can do that via loginctl enable-linger <username>. It is buried in the manpages of podman-generate-systemd:
+# http://docs.podman.io/en/latest/markdown/podman-generate-systemd.1.html
+
+- name: Check if lingering is enabled for user {{ common_user.name }}
+  ansible.builtin.stat: 
+    path: "/var/lib/systemd/linger/{{ common_user.name }}"
+  register: linger
+  changed_when: False
+  when: systemd_user.linger.enable
+
+- name: Enable lingering for user {{ common_user.name }}
+  ansible.builtin.command: "loginctl enable-linger {{ common_user.name }}"
+  when: 
+    - not linger.stat.exists
+    - systemd_config.enable_linger | default('yes')
+  when: systemd_user.linger.enable
+

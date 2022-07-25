@@ -1,0 +1,9 @@
+- hosts: all
+
+  pre_tasks:
+    - name: Load variables for {{ ansible_hostname }}
+      ansible.builtin.include_vars:
+        file: "{{ inventory_dir }}/configs/{{ ansible_hostname }}.yml"
+
+  roles:
+    - { role: ostree }

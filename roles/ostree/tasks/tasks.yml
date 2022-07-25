@@ -1,0 +1,24 @@
+---
+- name: Check if there is an active rpm-ostree transaction
+  ansible.builtin.command: rpm-ostree status
+  register: ostree_status
+  changed_when: False
+
+- name: Exit with error if an rpm-ostree transaction is in progress
+  ansible.builtin.fail:
+    msg: "A rpm-ostree transaction is currently running, check with 'rpm-ostree status'."
+  when: "'State: idle' not in ostree_status.stdout_lines"
+
+- name: Install layered packages
+  community.general.rpm_ostree_pkg:
+    name: "{{ layered_packages }}"
+    state: present
+    # apply_live: true
+  become: yes
+
+- name: Remove base os packages
+  community.general.rpm_ostree_pkg:
+    name: "{{ base_package_remove }}"
+    state: absent
+  become: yes
+

@@ -1,0 +1,22 @@
+---
+- name: Create required directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  loop: "{{ filesystem_folders }}"
+  become: yes
+
+- name: Configure mounts
+  ansible.posix.mount:
+    src: "{{ item.src }}"
+    path: "{{ item.path }}"
+    fstype: "{{ item.fstype }}"
+    opts: "{{ item.opts }}"
+    state: "{{ item.state }}"
+    dump: "{{ item.dump }}"
+    passno: "{{ item.passno }}"
+  loop: "{{ filesystem_mounts }}"
+  become: yes
