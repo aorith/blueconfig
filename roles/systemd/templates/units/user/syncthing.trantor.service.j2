@@ -9,7 +9,7 @@ RequiresMountsFor=/run/user/1000/containers
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Environment=SYNCTHING_IMAGE=docker.io/syncthing/syncthing:latest
-Restart=on-failure
+Restart=no
 RestartSec=30
 TimeoutStopSec=70
 
@@ -28,8 +28,6 @@ ExecStart=/usr/bin/podman run \
           -v {{ common_user.home }}/storage/tank/data/syncthing/_config/syncthing:/config:Z \
           ${SYNCTHING_IMAGE} \
           -no-browser -no-restart -logflags=0 --home /config
-
-ExecStop=-/usr/bin/podman stop -t 10 syncthing
 
 [Install]
 WantedBy=default.target
