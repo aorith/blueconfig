@@ -1,0 +1,9 @@
+---
+- name: Include systemd network links for Wake On Lan
+  ansible.builtin.template:
+    src: templates/system/links/50-wol.link.j2
+    dest: "/etc/systemd/network/50-wol-{{ item.name }}.link"
+    owner: root
+    group: root
+  become: yes
+  loop: "{{ systemd_system.wake_on_lan }}"

@@ -91,3 +91,8 @@ systemd_user:
     enable: yes
   templates:
     - { src: "units/user/syncthing.trantor.service.j2", dest: "syncthing.service" }
+
+systemd_system:
+  wake_on_lan:
+    - { name: "enp8s0", macaddr: "a8:5e:45:b3:10:95" }
+
