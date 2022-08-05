@@ -71,13 +71,17 @@ flatpak_packages:
   - { remote: 'flathub', package: 'org.gnome.Firmware' }    
   - { remote: 'flathub', package: 'org.mozilla.firefox' }
   - { remote: 'flathub', package: 'org.remmina.Remmina' }
-  - { remote: 'flathub', package: 'org.glimpse_editor.Glimpse' } # it's just GIMP renamed
+  - { remote: 'flathub', package: 'org.gimp.GIMP' }
   - { remote: 'flathub', package: 'com.github.tchx84.Flatseal' } # manage flatpak permissions
   - { remote: 'flathub', package: 'md.obsidian.Obsidian' }
   - { remote: 'flathub', package: 'io.mpv.Mpv' }
   - { remote: 'flathub', package: 'org.flameshot.Flameshot' }
   - { remote: 'flathub', package: 'org.videolan.VLC' }
   - { remote: 'flathub', package: 'com.google.Chrome' }
+  - { remote: 'flathub', package: 'com.vscodium.codium' }
+  - { remote: 'flathub', package: 'com.spotify.Client' }
+  - { remote: 'flathub', package: 'com.obsproject.Studio' }
+  - { remote: 'flathub', package: 'com.bitwarden.desktop' }
 
 
 # Systemd role
