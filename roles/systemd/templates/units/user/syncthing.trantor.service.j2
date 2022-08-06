@@ -25,9 +25,10 @@ ExecStart=/usr/bin/podman run \
           --userns=keep-id \
           --network=host \
           -v {{ common_user.home }}/storage/tank/data/syncthing:/data1:Z \
-          -v {{ common_user.home }}/storage/tank/data/syncthing/_config/syncthing:/config:Z \
-          ${SYNCTHING_IMAGE} \
-          -no-browser -no-restart -logflags=0 --home /config
+          -v {{ common_user.home }}/.config/syncthing:/var/syncthing/config:Z \
+          ${SYNCTHING_IMAGE}
+
+# home is by default '/var/syncthing/config' else use: --home /dir
 
 [Install]
 WantedBy=default.target
