@@ -82,6 +82,7 @@ flatpak_packages:
   - { remote: 'flathub', package: 'com.spotify.Client' }
   - { remote: 'flathub', package: 'com.obsproject.Studio' }
   - { remote: 'flathub', package: 'com.bitwarden.desktop' }
+  - { remote: 'flathub', package: 'com.calibre_ebook.calibre' }
 
 
 # Systemd role
