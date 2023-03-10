@@ -15,10 +15,12 @@
     state: present
     # apply_live: true
   become: yes
+  when: layered_packages is defined
 
 - name: Remove base os packages
   community.general.rpm_ostree_pkg:
     name: "{{ base_package_remove }}"
     state: absent
   become: yes
+  when: base_package_remove is defined
 

@@ -10,8 +10,7 @@ RequiresMountsFor=/run/user/1000/containers
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Environment=SYNCTHING_IMAGE=docker.io/syncthing/syncthing:latest
 Restart=no
-RestartSec=30
-TimeoutStopSec=70
+TimeoutStopSec=35
 
 ExecStartPre=-/usr/bin/podman pull ${SYNCTHING_IMAGE}
 ExecStartPre=-/usr/bin/podman stop -t 10 syncthing
@@ -29,6 +28,8 @@ ExecStart=/usr/bin/podman run \
           ${SYNCTHING_IMAGE}
 
 # home is by default '/var/syncthing/config' else use: --home /dir
+
+ExecStop=-/usr/bin/podman stop -t 15 syncthing
 
 [Install]
 WantedBy=default.target
