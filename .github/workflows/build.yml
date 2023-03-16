@@ -1,14 +1,15 @@
 name: build-blueconfig
 on:
   schedule:
-    - cron: "35 23 * * *" # 23:35 every day
+    - cron: '35 23 * * *' # 23:35 every day
   push:
     branches:
       - master
     paths-ignore:
-      - "**.md"
-      - "**.txt"
-      - "post-install/*"
+      - '**.md'
+      - '**.txt'
+      - 'post-install/**'
+
 env:
   IMAGE_NAME: blueconfig
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
