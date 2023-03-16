@@ -4,9 +4,9 @@
     - name: Load variables for {{ ansible_hostname }}
       ansible.builtin.include_vars:
         file: "{{ inventory_dir }}/configs/{{ ansible_hostname }}.yml"
-      
+
   roles:
     - { role: filesystem }
-    - { role: ostree }
+  # - { role: ostree }
     - { role: flatpak }
     - { role: systemd }

@@ -2,7 +2,7 @@
 - name: Include SystemD role tasks ...
   ansible.builtin.include_tasks: "{{ outer_item }}"
   loop:
-    - user.yml
+  # - user.yml
     - system.yml
   loop_control: # avoids 'item' variable overwritting in inner tasks
     loop_var: outer_item
