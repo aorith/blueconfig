@@ -13,7 +13,9 @@ To rebase an existing Silverblue/Kinoite machine to the latest release:
 1. After you reboot you should [pin the working deployment](https://docs.fedoraproject.org/en-US/fedora-silverblue/faq/#_about_using_silverblue) so you can safely rollback 
 1. Open a terminal and use one of the following commands to rebase the OS:
 
-    sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/aorith/blueconfig:latest
+```
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/aorith/blueconfig:latest
+```
 
 Check [post-install](post-install) for the *post-install* instructions.  
 
