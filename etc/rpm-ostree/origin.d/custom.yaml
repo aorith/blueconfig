@@ -1,6 +1,7 @@
 packages:
   - alacritty
   - bc
+  - cloud-utils
   - cockpit-machines
   - cockpit-navigator
   - cockpit-networkmanager
