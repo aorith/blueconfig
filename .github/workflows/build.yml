@@ -26,6 +26,10 @@ jobs:
       fail-fast: false
       matrix:
         major_version: [ 37 ]
+        include:
+          - is_stable: false
+          - is_stable: true
+            major_version: 37
 
     steps:
       # Checkout push-to-registry action GitHub repository
@@ -42,13 +46,16 @@ jobs:
           TIMESTAMP="$(date +%Y%m%d)"
 
           BUILD_TAGS=("${MAJOR_VERSION}" "${MAJOR_VERSION}-${TIMESTAMP}" "latest")
+          if [[ "${{ matrix.is_stable }}" == "true" ]]; then
+              BUILD_TAGS+=("stable")
+          fi
 
           echo "Generated the following build tags: "
           for TAG in "${BUILD_TAGS[@]}"; do
               echo "${TAG}"
           done
 
-          echo "alias_tags=${BUILD_TAGS[*]}" >> $GITHUB_OUTPUT
+          echo "alias_tags=${BUILD_TAGS[*]}" >> "$GITHUB_OUTPUT"
 
       # Build metadata
       - name: Image Metadata
