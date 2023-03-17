@@ -12,7 +12,6 @@ packages:
   - cockpit-system
   - cockpit-ws
   - distrobox
-  - docker-compose
   - ffmpeg
   - ffmpeg-libs
   - ffmpegthumbnailer
@@ -26,7 +25,6 @@ packages:
   - libva-intel-driver
   - libva-utils
   - mesa-va-drivers-freeworld
-  - moby-engine
   - nautilus-gsconnect
   - net-tools
   - nvme-cli
@@ -34,6 +32,7 @@ packages:
   - openssl
   - pipewire-codec-aptx
   - podman-compose
+  - podman-docker
   - python3-psutil
   - smartmontools
   - syncthing
