@@ -11,5 +11,5 @@ COPY etc /etc
 RUN chmod +x /tmp/build.sh && /tmp/build.sh
 
 RUN rm -rf /tmp/* /var/* && mkdir -p /var/tmp && chmod -R 1777 /var/tmp
-RUN sed -i "s,^VERSION=.*,VERSION=\"${VERSION}\"," /usr/lib/os-release
+RUN sed -i "s,^OSTREE_VERSION=.*,OSTREE_VERSION=\"${VERSION}\"," /usr/lib/os-release
 RUN rpm-ostree cleanup -m && ostree container commit
