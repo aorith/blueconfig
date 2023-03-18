@@ -39,7 +39,6 @@ packages:
 
   # Gnome
   - gnome-shell-extension-appindicator
-  - gnome-shell-extension-dash-to-dock
   - gnome-shell-extension-gsconnect
   - gnome-tweaks
   - nautilus-gsconnect

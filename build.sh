@@ -18,3 +18,6 @@ sed -i 's,.*AutomaticUpdatePolicy=.*,AutomaticUpdatePolicy=stage,g' /etc/rpm-ost
 systemctl enable rpm-ostreed-automatic.timer
 systemctl enable flatpak-system-update.timer
 systemctl --global enable flatpak-user-update.timer
+
+# Disable suspend & hibernate
+systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
