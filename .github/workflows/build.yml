@@ -1,14 +1,14 @@
 name: build-blueconfig
 on:
   schedule:
-    - cron: '35 23 * * *' # 23:35 every day
+    - cron: "35 23 * * *" # 23:35 every day
   push:
     branches:
       - master
     paths-ignore:
-      - '**.md'
-      - '**.txt'
-      - 'post-install/**'
+      - "**.md"
+      - "**.txt"
+      - "post-install/**"
 
 env:
   IMAGE_NAME: blueconfig
@@ -55,7 +55,11 @@ jobs:
               echo "${TAG}"
           done
 
+          # Shown in rpm-ostree status
+          VERSION="${MAJOR_VERSION}.${TIMESTAMP}.$(date +%H)"
+
           echo "alias_tags=${BUILD_TAGS[*]}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       # Build metadata
       - name: Image Metadata
@@ -67,6 +71,7 @@ jobs:
           labels: |
             org.opencontainers.image.title=${{ env.IMAGE_NAME }}
             org.opencontainers.image.description=Image for ${{ env.IMAGE_NAME }}
+            org.opencontainers.image.version=${{ steps.generate-tags.outputs.version }}
 
       # Build image using Buildah action
       - name: Build Image
