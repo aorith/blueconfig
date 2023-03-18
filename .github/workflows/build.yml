@@ -85,6 +85,7 @@ jobs:
             ${{ steps.generate-tags.outputs.alias_tags }}
           build-args: |
             FEDORA_MAJOR_VERSION=${{ matrix.major_version }}
+            VERSION=${{ steps.generate-tags.outputs.version }}
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
 
