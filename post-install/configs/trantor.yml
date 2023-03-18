@@ -26,38 +26,6 @@ filesystem_mounts:
 filesystem_symlinks:
   - { link_src: "/var/home/aorith/storage/tank/data/syncthing", dest: "/var/home/aorith/Syncthing" }
 
-# OsTree role
-# --------------------------------------------------
-run_ostree_role: yes
-
-layered_packages:
-  - alacritty.x86_64
-  - cloud-utils
-  - cockpit-machines
-  - cockpit-navigator
-  - cockpit-networkmanager
-  - cockpit-ostree
-  - cockpit-podman
-  - cockpit-selinux
-  - cockpit-storaged
-  - cockpit-system
-  - cockpit-ws
-  - distrobox
-  - genisoimage
-  - gnome-tweaks
-  - htop
-  - net-tools
-  - podman-compose # consider checking out 'podman generate kube' and 'podman play kube'
-  - python3-psutil
-  - vim
-  - virt-install
-  - virt-manager
-  - virt-viewer
-
-#base_package_remove:
-#  - firefox
-
-
 # Flatpak role
 # --------------------------------------------------
 run_flatpak_role: yes
@@ -65,22 +33,26 @@ run_flatpak_role: yes
 # flatpak remotes --show-details
 flatpak_remotes:
   - { name: 'flathub', url: 'https://dl.flathub.org/repo/flathub.flatpakrepo' }
-  - { name: 'fedora',  url: 'oci+https://registry.fedoraproject.org' }
 
 flatpak_packages:
+  - { remote: 'flathub', package: 'chat.rocket.RocketChat' }
   - { remote: 'flathub', package: 'com.bitwarden.desktop' }
   - { remote: 'flathub', package: 'com.calibre_ebook.calibre' }
   - { remote: 'flathub', package: 'com.github.tchx84.Flatseal' } # manage flatpak permissions
   - { remote: 'flathub', package: 'com.google.Chrome' }
+  - { remote: 'flathub', package: 'com.mattjakeman.ExtensionManager' }
   - { remote: 'flathub', package: 'com.obsproject.Studio' }
   - { remote: 'flathub', package: 'com.spotify.Client' }
+  - { remote: 'flathub', package: 'com.valvesoftware.Steam' }
   - { remote: 'flathub', package: 'com.vscodium.codium' }
   - { remote: 'flathub', package: 'io.mpv.Mpv' }
-  - { remote: 'flathub', package: 'md.obsidian.Obsidian' }
   - { remote: 'flathub', package: 'net.cozic.joplin_desktop' }
+  - { remote: 'flathub', package: 'org.blender.Blender' }
   - { remote: 'flathub', package: 'org.flameshot.Flameshot' }
   - { remote: 'flathub', package: 'org.gimp.GIMP' }
   - { remote: 'flathub', package: 'org.gnome.Firmware' }
+  - { remote: 'flathub', package: 'org.inkscape.Inkscape' }
+  - { remote: 'flathub', package: 'org.libreoffice.LibreOffice' }
   - { remote: 'flathub', package: 'org.remmina.Remmina' }
   - { remote: 'flathub', package: 'org.videolan.VLC' }
 
@@ -92,10 +64,10 @@ run_systemd_role: yes
 systemd_user:
   syncthing:
     enable: yes
+  templates:
+    - { src: "user/units/syncthing.trantor.service.j2", dest: "syncthing.service" }
   linger:
     enable: yes
-  templates:
-    - { src: "units/user/syncthing.trantor.service.j2", dest: "syncthing.service" }
 
 systemd_system:
   wake_on_lan:
