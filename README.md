@@ -3,7 +3,9 @@ Fedora Silverblue configuration
 
 > Configuration for my daily work machine running Silverblue.  
 
-This is based on https://coreos.github.io/rpm-ostree/, an image is built nightly, the [post-install](post-install) configuration is only required on the first install.  
+Silverblue setup using [OSTree native containers](https://coreos.github.io/rpm-ostree/container/), the [post-install](post-install) playbook and scripts are only required after the first install.  
+
+**This is an opinionated build that probably won't suit your needs.**  
 
 ## How to install
 
