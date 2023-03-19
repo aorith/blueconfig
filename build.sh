@@ -16,8 +16,7 @@ rpm-ostree ex rebuild
 # Enable automatic updates
 sed -i 's,.*AutomaticUpdatePolicy=.*,AutomaticUpdatePolicy=stage,g' /etc/rpm-ostreed.conf
 systemctl enable rpm-ostreed-automatic.timer
-systemctl enable flatpak-system-update.timer
-systemctl --global enable flatpak-user-update.timer
+systemctl enable rpm-ostree-countme.timer
 
 # Disable suspend & hibernate
 systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
