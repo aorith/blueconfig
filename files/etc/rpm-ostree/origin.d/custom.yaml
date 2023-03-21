@@ -50,6 +50,9 @@ packages:
   - python3-psutil
   - syncthing
 
+  # Fonts
+  - jetbrains-mono-fonts
+
 # Packages to remove
 override-remove:
   - firefox
