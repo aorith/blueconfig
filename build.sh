@@ -15,9 +15,9 @@ rpm-ostree ex rebuild
 
 # Fonts
 wget -P /tmp/fonts "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/NerdFontsSymbolsOnly.zip"
+( cd /tmp/fonts/ && unzip -o NerdFontsSymbolsOnly.zip; )
 find /tmp/fonts -type f -name "*Windows*" -delete
 find /tmp/fonts -type f -not -name "*Complete.ttf" -delete
-( cd /tmp/fonts/ && unzip -o NerdFontsSymbolsOnly.zip; )
 mkdir -p /usr/share/fonts/NerdFonts
 cp /tmp/fonts/*.ttf /usr/share/fonts/NerdFonts/
 
