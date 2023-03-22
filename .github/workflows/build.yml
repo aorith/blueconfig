@@ -26,28 +26,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major_version: [ 37 ]
+        major_version: [37]
         include:
           - is_stable: false
           - is_stable: true
             major_version: 37
 
     steps:
+      # Checkout push-to-registry action GitHub repository
+      - name: Checkout Push to Registry action
+        uses: actions/checkout@v3
+
       - name: Check for new upstream version
         id: check-new-version
         shell: bash
         run: |
-          apt-get update -y && apt-get install -y skopeo jq
+          sudo apt-get update -y && sudo apt-get install -y skopeo jq
           if bash ./check-upstream-version.sh "${{ env.IMAGE_REGISTRY }}:${{ matrix.major_version }}" "${{ env.UPSTREAM_IMAGE }}:${{ matrix.major_version }}"; then
               echo "continue=true" >> "$GITHUB_OUTPUT"
           else
               echo "continue=false" >> "$GITHUB_OUTPUT"
           fi
-
-      # Checkout push-to-registry action GitHub repository
-      - name: Checkout Push to Registry action
-        if: steps.check-new-version.outputs.continue == 'true'
-        uses: actions/checkout@v3
 
       - name: Generate tags
         if: steps.check-new-version.outputs.continue == 'true'
