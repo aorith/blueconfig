@@ -42,7 +42,7 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -y && sudo apt-get install -y skopeo jq
-          if bash ./check-upstream-version.sh "${{ env.IMAGE_REGISTRY }}:${{ matrix.major_version }}" "${{ env.UPSTREAM_IMAGE }}:${{ matrix.major_version }}"; then
+          if bash ./check-upstream-version.sh "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.major_version }}" "${{ env.UPSTREAM_IMAGE }}:${{ matrix.major_version }}"; then
               echo "continue=true" >> "$GITHUB_OUTPUT"
           else
               echo "continue=false" >> "$GITHUB_OUTPUT"
