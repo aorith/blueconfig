@@ -1,7 +1,7 @@
 name: build-blueconfig
 on:
   schedule:
-    - cron: "35 23 * * *" # 23:35 every day
+    - cron: "35 15,23 * * *"
   push:
     branches:
       - master
@@ -41,6 +41,12 @@ jobs:
         id: check-new-version
         shell: bash
         run: |
+          if [[ "${{ github.event_name }}" != "schedule" ]]; then
+            echo "Not running an schedule event (${{ github.event_name }}), skipping version check."
+            echo "continue=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           sudo apt-get update -y && sudo apt-get install -y skopeo jq
           if bash ./check-upstream-version.sh "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.major_version }}" "${{ env.UPSTREAM_IMAGE }}:${{ matrix.major_version }}"; then
               echo "continue=true" >> "$GITHUB_OUTPUT"
