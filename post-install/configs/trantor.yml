@@ -44,7 +44,11 @@ flatpak_packages:
   - { remote: 'flathub', package: 'com.obsproject.Studio' }
   - { remote: 'flathub', package: 'com.spotify.Client' }
   - { remote: 'flathub', package: 'com.valvesoftware.Steam' }
+  - { remote: 'flathub', package: 'com.valvesoftware.Steam.CompatibilityTool.Proton-GE' }
   - { remote: 'flathub', package: 'com.vscodium.codium' }
+  - { remote: 'flathub', package: 'io.dbeaver.DBeaverCommunity' }
+  - { remote: 'flathub', package: 'io.dbeaver.DBeaverCommunity.Client.mariadb' }
+  - { remote: 'flathub', package: 'io.dbeaver.DBeaverCommunity.Client.pgsql' }
   - { remote: 'flathub', package: 'io.mpv.Mpv' }
   - { remote: 'flathub', package: 'net.cozic.joplin_desktop' }
   - { remote: 'flathub', package: 'org.blender.Blender' }
@@ -53,6 +57,7 @@ flatpak_packages:
   - { remote: 'flathub', package: 'org.gnome.Firmware' }
   - { remote: 'flathub', package: 'org.inkscape.Inkscape' }
   - { remote: 'flathub', package: 'org.libreoffice.LibreOffice' }
+  - { remote: 'flathub', package: 'org.mozilla.firefox' }
   - { remote: 'flathub', package: 'org.remmina.Remmina' }
   - { remote: 'flathub', package: 'org.videolan.VLC' }
 
