@@ -26,11 +26,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major_version: [37]
+        major_version: [38]
         include:
           - is_stable: false
           - is_stable: true
-            major_version: 37
+            major_version: 38
 
     steps:
       # Checkout push-to-registry action GitHub repository
