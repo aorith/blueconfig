@@ -59,7 +59,6 @@ override-remove:
   - firefox-langpacks
   - mesa-va-drivers
   - libavcodec-free
-  - libavdevice-free
   - libavfilter-free
   - libavformat-free
   - libavutil-free
