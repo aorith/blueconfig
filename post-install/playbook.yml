@@ -6,7 +6,5 @@
         file: "{{ inventory_dir }}/configs/{{ ansible_hostname }}.yml"
 
   roles:
-    - { role: filesystem, when: ansible_os_family != "NixOS" }
-  # - { role: ostree, when: ansible_os_family != "NixOS" }
-    - { role: flatpak }
-    - { role: systemd, when: ansible_os_family != "NixOS" }
+    - { role: filesystem }
+    - { role: systemd }

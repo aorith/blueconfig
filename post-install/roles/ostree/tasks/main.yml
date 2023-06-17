@@ -1,4 +1,0 @@
----
-- name: Include OsTree role tasks ...
-  ansible.builtin.include_tasks: tasks.yml
-  when: run_ostree_role

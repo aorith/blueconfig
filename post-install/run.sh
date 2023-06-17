@@ -23,5 +23,5 @@ else
     _activate_venv
 fi
 
-ansible-galaxy install -r requirements.yml
+#ansible-galaxy install -r requirements.yml
 ansible-playbook playbook.yml

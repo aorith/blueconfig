@@ -42,7 +42,6 @@ packages:
   - gnome-shell-extension-gsconnect
   - gnome-tweaks
   - nautilus-gsconnect
-  - yaru-theme
 
   # Extras
   - haveged
@@ -52,6 +51,9 @@ packages:
 
   # Fonts
   - jetbrains-mono-fonts
+
+  # Gaming
+  - steam-devices
 
 # Packages to remove
 override-remove:
