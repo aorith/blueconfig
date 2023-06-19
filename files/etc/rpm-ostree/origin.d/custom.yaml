@@ -5,6 +5,8 @@
 packages:
   # Desktop
   - alacritty
+  - wl-clipboard
+  - xclip
 
   # Utils
   - bc
