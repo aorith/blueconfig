@@ -1,7 +1,7 @@
 name: build-blueconfig
 on:
   schedule:
-    - cron: "35 15,23 * * *"
+    - cron: "35 23 * * 0,2,4,6"
   push:
     branches:
       - master
