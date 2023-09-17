@@ -1,4 +1,3 @@
-
 # Experimental: https://coreos.github.io/rpm-ostree/ex-rebuild/
 
 # Packages to install
@@ -50,9 +49,6 @@ packages:
   - openssl
   - python3-psutil
   - syncthing
-
-  # Fonts
-  - jetbrains-mono-fonts
 
   # Gaming
   - steam-devices
