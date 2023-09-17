@@ -8,7 +8,7 @@
   ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ common_user.home }}/.config/systemd/user/{{ item.dest }}"
-  loop: "{{ systemd_user.templates }}" 
+  loop: "{{ systemd_user.templates }}"
 
 - name: Reload Systemd
   ansible.builtin.systemd:
@@ -27,7 +27,7 @@
 # http://docs.podman.io/en/latest/markdown/podman-generate-systemd.1.html
 
 - name: Check if lingering is enabled for user {{ common_user.name }}
-  ansible.builtin.stat: 
+  ansible.builtin.stat:
     path: "/var/lib/systemd/linger/{{ common_user.name }}"
   register: linger
   changed_when: False
@@ -35,8 +35,7 @@
 
 - name: Enable lingering for user {{ common_user.name }}
   ansible.builtin.command: "loginctl enable-linger {{ common_user.name }}"
-  when: 
+  when:
     - not linger.stat.exists
-    - systemd_config.enable_linger | default('yes')
-  when: systemd_user.linger.enable
+    - systemd_user.linger.enable
 
