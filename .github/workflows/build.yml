@@ -16,7 +16,7 @@ env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 jobs:
-  push-ghcr:
+  build-and-push:
     name: Build and push image
     runs-on: ubuntu-latest
     permissions:
@@ -24,7 +24,6 @@ jobs:
       packages: write
       id-token: write
     strategy:
-      fail-fast: false
       matrix:
         major_version: [38]
         include:
@@ -33,9 +32,7 @@ jobs:
             major_version: 38
 
     steps:
-      # Checkout push-to-registry action GitHub repository
-      - name: Checkout Push to Registry action
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Check for new upstream version
         id: check-new-version
@@ -109,7 +106,7 @@ jobs:
             FEDORA_MAJOR_VERSION=${{ matrix.major_version }}
             VERSION=${{ steps.generate-tags.outputs.version }}
           labels: ${{ steps.meta.outputs.labels }}
-          oci: false
+          oci: true
 
       # Push the image to GHCR (Image Registry)
       - name: Push To GHCR
