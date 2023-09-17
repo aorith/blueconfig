@@ -6,6 +6,7 @@ FROM ${UPSTREAM_IMAGE}:${FEDORA_MAJOR_VERSION} AS builder
 ARG VERSION
 RUN sed -i "s,^PRETTY_NAME=.*,PRETTY_NAME=\"Fedora Linux ${VERSION} \(Blueconfig\)\"," /usr/lib/os-release
 
+COPY etc /etc
 COPY usr /usr
 
 ADD build.sh /tmp/build.sh
