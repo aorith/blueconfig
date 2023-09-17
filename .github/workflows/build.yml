@@ -32,7 +32,7 @@ jobs:
             major_version: 38
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Check for new upstream version
         id: check-new-version
