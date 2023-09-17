@@ -8,9 +8,7 @@ packages:
   - xclip
 
   # Utils
-  - bc
-  - fzf
-  - htop
+  - make
   - net-tools
   - nvme-cli
   - nvtop
