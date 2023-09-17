@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # based on: https://github.com/dnkmmr69420/nix-with-selinux/blob/main/silverblue-installer.sh
 set -euo pipefail
+cd "$(dirname -- "$0")" || exit 1
 
 Log() { printf '[%s] %s\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$*" >&2; }
 Err() {
@@ -106,6 +107,10 @@ sleep 1
 Log "Setting SELinux back to Enforcing"
 setenforce Enforcing
 sleep 1
+
+Log "Copying nix.conf..."
+mkdir -p /etc/nix
+cp ./etc/nix/nix.conf /etc/nix/
 
 Log "Reboot your system by typing"
 Log "systemctl reboot"
