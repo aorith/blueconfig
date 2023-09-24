@@ -1,0 +1,11 @@
+[Unit]
+Description=Flatpak Automatic Update
+Documentation=man:flatpak(1)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/flatpak --system uninstall --unused -y --noninteractive
+ExecStart=/usr/bin/flatpak --system update -y --noninteractive
+ExecStartPost=/usr/bin/flatpak --system repair
