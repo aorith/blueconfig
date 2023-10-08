@@ -51,6 +51,10 @@ packages:
   # Gaming
   - steam-devices
 
+  # Logitech unifying
+  - solaar
+  - solaar-udev
+
 # Packages to remove
 override-remove:
   - firefox
