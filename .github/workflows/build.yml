@@ -25,7 +25,7 @@ jobs:
       id-token: write
     strategy:
       matrix:
-        major_version: [38]
+        major_version: [38, 39]
         include:
           - is_stable: false
           - is_stable: true
