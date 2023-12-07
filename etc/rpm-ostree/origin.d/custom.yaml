@@ -43,6 +43,7 @@ packages:
   - nautilus-gsconnect
 
   # Extras
+  - flameshot
   - haveged
   - openssl
   - python3-psutil
