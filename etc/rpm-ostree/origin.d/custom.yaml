@@ -8,6 +8,7 @@ packages:
   - xclip
 
   # Utils
+  - ansible-core
   - make
   - net-tools
   - nvme-cli
