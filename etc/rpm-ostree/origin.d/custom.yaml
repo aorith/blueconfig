@@ -8,6 +8,7 @@ packages:
   - xclip
 
   # Utils
+  - android-tools
   - bootc
   - make
   - net-tools
@@ -20,7 +21,6 @@ packages:
 
   # Drivers & misc
   - alsa-firmware
-  - android-udev-rules
   - ffmpeg
   - ffmpeg-libs
   - ffmpegthumbnailer
