@@ -11,20 +11,22 @@ common_user:
 run_filesystem_role: yes
 
 filesystem_folders:
-  - { path: "/var/home/aorith/storage",       owner: 'root',                   group: 'root',                   mode: '0775' }
-  - { path: "/var/home/aorith/storage/disk1", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775' }
-  - { path: "/var/home/aorith/storage/disk2", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775' }
-  - { path: "/var/home/aorith/storage/tank",  owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775' }
+  - { path: "/mnt/storage",       owner: 'root',                   group: 'root',                   mode: '0775' }
+  - { path: "/mnt/storage/disk1", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775' }
+  - { path: "/mnt/storage/disk2", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775' }
+  - { path: "/mnt/storage/tank",  owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775' }
 
 # dump: (backups) see 'man dump 8'
 # passno: see 'man fsck 8' it's the order for fsck, usually root is 0 and the rest is 2
 filesystem_mounts:
-  - { src: "LABEL=tank",  path: "/var/home/aorith/storage/tank",  fstype: "btrfs", opts: "defaults,compress=zstd:1", state: "mounted", dump: '0', passno: '0' }
-  - { src: "LABEL=DISK1", path: "/var/home/aorith/storage/disk1", fstype: "ext4",  opts: "defaults,noatime",         state: "mounted", dump: '0', passno: '2' }
-  - { src: "LABEL=DISK2", path: "/var/home/aorith/storage/disk2", fstype: "ext4",  opts: "defaults,noatime",         state: "mounted", dump: '0', passno: '2' }
+  - { src: "LABEL=tank",  path: "/mnt/storage/tank",  fstype: "btrfs", opts: "defaults,compress=zstd:1", state: "mounted", dump: '0', passno: '0' }
+  - { src: "LABEL=DISK1", path: "/mnt/storage/disk1", fstype: "ext4",  opts: "defaults,noatime",         state: "mounted", dump: '0', passno: '2' }
+  - { src: "LABEL=DISK2", path: "/mnt/storage/disk2", fstype: "ext4",  opts: "defaults,noatime",         state: "mounted", dump: '0', passno: '2' }
 
 filesystem_symlinks:
-  - { link_src: "/var/home/aorith/storage/tank/data/syncthing", dest: "/var/home/aorith/Syncthing" }
+  - { link_src: "/mnt/storage", dest: "/var/home/aorith/storage" }
+  - { link_src: "/mnt/storage/tank/data/syncthing", dest: "/var/home/aorith/Syncthing" }
+  - { link_src: "/mnt/storage/tank/work-in-progress", dest: "/var/home/aorith/work-in-progress" }
 
 # Systemd role
 # --------------------------------------------------
