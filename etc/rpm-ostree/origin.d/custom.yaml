@@ -12,6 +12,7 @@ packages:
   - bootc
   - make
   - net-tools
+  - netcat
   - nvme-cli
   - nvtop
   - smartmontools
