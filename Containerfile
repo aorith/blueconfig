@@ -12,4 +12,12 @@ COPY usr /usr
 ADD build.sh /tmp/build.sh
 RUN bash /tmp/build.sh
 
+ADD install-nerd-font.sh /tmp/install-nerd-font.sh
+RUN bash /tmp/install-nerd-font.sh 3.1.1 Hack \
+        && bash /tmp/install-nerd-font.sh 3.1.1 JetBrainsMono \
+        && bash /tmp/install-nerd-font.sh 3.1.1 IBMPlexMono \
+        && bash /tmp/install-nerd-font.sh 3.1.1 IosevkaTerm \
+        && bash /tmp/install-nerd-font.sh 3.1.1 SourceCodePro \
+        && rm -rf /tmp/*
+
 RUN rpm-ostree cleanup -m && ostree container commit
