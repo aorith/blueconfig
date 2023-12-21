@@ -4,6 +4,14 @@ set -eux -o pipefail
 
 RELEASE=$(rpm -E %fedora)
 
+# Fonts
+bash /tmp/install-nerd-font.sh 3.1.1 Hack
+bash /tmp/install-nerd-font.sh 3.1.1 JetBrainsMono
+bash /tmp/install-nerd-font.sh 3.1.1 IBMPlexMono
+bash /tmp/install-nerd-font.sh 3.1.1 IosevkaTerm
+bash /tmp/install-nerd-font.sh 3.1.1 SourceCodePro
+rm -f /tmp/install-nerd-font.sh
+
 # Rpm Fusion
 wget -P /tmp/rpms \
     "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${RELEASE}.noarch.rpm" \
