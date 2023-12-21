@@ -12,4 +12,3 @@ tar --no-same-owner -xJf "/tmp/${FN}.tar.xz" -C "/usr/share/fonts/${FN}/"
 rm -f "/tmp/${FN}.tar.xz"
 rm -f "/usr/share/fonts/${FN}"/*Windows*
 chmod 0644 "/usr/share/fonts/${FN}"/*
-fc-cache -sf

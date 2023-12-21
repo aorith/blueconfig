@@ -11,6 +11,7 @@ bash /tmp/install-nerd-font.sh 3.1.1 IBMPlexMono
 bash /tmp/install-nerd-font.sh 3.1.1 IosevkaTerm
 bash /tmp/install-nerd-font.sh 3.1.1 SourceCodePro
 rm -f /tmp/install-nerd-font.sh
+fc-cache -sf
 
 # Rpm Fusion
 wget -P /tmp/rpms \
