@@ -6,7 +6,7 @@ FN="$2"  # Hack
 
 BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v${VER}/${FN}.tar.xz"
 
-curl -sv -o "/tmp/${FN}.tar.xz" "$BASE_URL"
+curl -s -L -o "/tmp/${FN}.tar.xz" "$BASE_URL"
 mkdir -p "/usr/share/fonts/${FN}"
 tar -xJf "/tmp/${FN}.tar.xz" -C "/usr/share/fonts/${FN}/"
 rm -f "/tmp/${FN}.tar.xz"
