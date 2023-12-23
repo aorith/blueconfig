@@ -7,6 +7,10 @@ packages:
   - wl-clipboard
   - xclip
 
+  # Media
+  - mpv
+  - vlc
+
   # Utils
   - android-tools
   - bootc
