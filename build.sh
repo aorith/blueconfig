@@ -8,7 +8,6 @@ RELEASE=$(rpm -E %fedora)
 bash /tmp/install-nerd-font.sh 3.1.1 Hack
 bash /tmp/install-nerd-font.sh 3.1.1 JetBrainsMono
 bash /tmp/install-nerd-font.sh 3.1.1 IosevkaTerm
-bash /tmp/install-nerd-font.sh 3.1.1 0xProto
 rm -f /tmp/install-nerd-font.sh
 fc-cache -sf
 

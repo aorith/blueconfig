@@ -40,10 +40,14 @@ packages:
   - cloud-utils
   - distrobox
   - libvirt
+  - libvirt-daemon-config-network
+  - libvirt-daemon-kvm
   - podman-compose
   - podman-docker
+  - qemu-kvm
   - virt-install
   - virt-manager
+  - virt-top
   - virt-viewer
 
   # Gnome
@@ -63,6 +67,10 @@ packages:
   # Logitech unifying
   - solaar
   - solaar-udev
+
+  # Language support - not really required
+  - langpacks-en
+  - langpacks-es
 
 # Packages to remove
 override-remove:
