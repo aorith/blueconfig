@@ -19,9 +19,6 @@ jobs:
   build-and-push:
     name: Build and push image
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/aorith/podman-builder:latest
-      options: --privileged
     permissions:
       contents: read
       packages: write
@@ -48,6 +45,7 @@ jobs:
             exit 0
           fi
 
+          sudo apt-get update -y && sudo apt-get install -y skopeo jq
           if bash ./check-upstream-version.sh "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.major_version }}" "${{ env.UPSTREAM_IMAGE }}:${{ matrix.major_version }}"; then
               echo "continue=true" >> "$GITHUB_OUTPUT"
           else
@@ -115,7 +113,7 @@ jobs:
           password: ${{ github.token }}
 
       - name: Login to GitHub Container Registry
-        uses: redhat-actions/podman-login@v1
+        uses: docker/login-action@v3
         if: github.event_name != 'pull_request' && steps.check-new-version.outputs.continue == 'true'
         with:
           registry: ghcr.io
