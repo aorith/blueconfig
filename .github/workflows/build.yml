@@ -19,6 +19,9 @@ jobs:
   build-and-push:
     name: Build and push image
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/aorith/podman-builder:latest
+      options: --privileged
     permissions:
       contents: read
       packages: write
@@ -44,7 +47,6 @@ jobs:
             exit 0
           fi
 
-          sudo apt-get update -y && sudo apt-get install -y skopeo jq
           if bash ./check-upstream-version.sh "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.major_version }}" "${{ env.UPSTREAM_IMAGE }}:${{ matrix.major_version }}"; then
               echo "continue=true" >> "$GITHUB_OUTPUT"
           else

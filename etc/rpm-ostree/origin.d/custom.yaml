@@ -19,6 +19,7 @@ packages:
   - netcat
   - nvme-cli
   - nvtop
+  - ripgrep
   - smartmontools
   - vim
   - wireguard-tools
