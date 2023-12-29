@@ -108,6 +108,7 @@ jobs:
             FEDORA_MAJOR_VERSION=${{ matrix.major_version }}
             VERSION=${{ steps.generate-tags.outputs.version }}
           labels: ${{ steps.meta.outputs.labels }}
+          layers: false
           oci: true
 
       # Push the image to GHCR (Image Registry)
