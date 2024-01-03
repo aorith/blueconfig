@@ -4,14 +4,6 @@ set -eux -o pipefail
 
 RELEASE=$(rpm -E %fedora)
 
-# Fonts
-bash /tmp/install-nerd-font.sh 3.1.1 Hack
-bash /tmp/install-nerd-font.sh 3.1.1 JetBrainsMono
-bash /tmp/install-nerd-font.sh 3.1.1 Iosevka
-bash /tmp/install-nerd-font.sh 3.1.1 Monaspace
-rm -f /tmp/install-nerd-font.sh
-fc-cache -sf
-
 # Rpm Fusion
 wget -P /tmp/rpms \
     "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${RELEASE}.noarch.rpm" \
@@ -30,6 +22,7 @@ systemctl enable rpm-ostree-countme.timer
 systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 
 # Cleanup
+fc-cache -sf
 rm -rf /tmp/*
 rm -rf /var/*
 mkdir -p /var/tmp

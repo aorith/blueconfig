@@ -9,7 +9,6 @@ RUN sed -i "s,^PRETTY_NAME=.*,PRETTY_NAME=\"Fedora Linux ${VERSION} \(Blueconfig
 COPY etc /etc
 COPY usr /usr
 
-ADD install-nerd-font.sh /tmp/install-nerd-font.sh
 ADD build.sh /tmp/build.sh
 RUN bash /tmp/build.sh
 
