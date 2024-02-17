@@ -19,6 +19,9 @@ gsettings reset org.gnome.desktop.wm.preferences num-workspaces
 gsettings set org.gnome.mutter dynamic-workspaces true
 gsettings set org.gnome.mutter edge-tiling true
 
+# fractional scaling
+gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
+
 # remove default keybindings for fav apps
 # gsettings set org.gnome.shell.keybindings switch-to-application-1 '[""]'
 # gsettings set org.gnome.shell.keybindings switch-to-application-2 '[""]'
