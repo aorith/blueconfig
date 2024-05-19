@@ -76,6 +76,7 @@ packages:
 # Packages to remove
 override-remove:
   - libavcodec-free
+  - libavdevice-free
   - libavfilter-free
   - libavformat-free
   - libavutil-free
@@ -83,4 +84,3 @@ override-remove:
   - libswresample-free
   - libswscale-free
   - mesa-va-drivers
-# - libavdevice-free
