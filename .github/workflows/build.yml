@@ -25,11 +25,11 @@ jobs:
       id-token: write
     strategy:
       matrix:
-        major_version: [39]
+        major_version: [40]
         include:
           - is_stable: false
           - is_stable: true
-            major_version: 39
+            major_version: 40
 
     steps:
       - name: Checkout
