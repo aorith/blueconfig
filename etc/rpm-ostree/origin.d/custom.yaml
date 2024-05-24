@@ -75,6 +75,7 @@ packages:
 
 # Packages to remove
 override-remove:
+  - ffmpeg-free
   - libavcodec-free
   - libavdevice-free
   - libavfilter-free
