@@ -113,7 +113,8 @@ sed -i 's,.*AutomaticUpdatePolicy=.*,AutomaticUpdatePolicy=stage,g' /etc/rpm-ost
 systemctl enable rpm-ostreed-automatic.timer
 systemctl enable rpm-ostree-countme.timer
 
-# Enable libvirtd socket
+# Enable sockets
+systemctl enable docker.socket
 systemctl enable libvirtd.socket
 
 # Disable suspend & hibernate
