@@ -1,14 +1,14 @@
 name: build-blueconfig
 on:
   schedule:
-    - cron: "35 23 * * *"
+  - cron: "35 23 * * *"
   push:
     branches:
-      - master
+    - master
     paths-ignore:
-      - "**.md"
-      - "**.txt"
-      - "post-install/**"
+    - "**.md"
+    - "**.txt"
+    - "post-install/**"
 
 env:
   UPSTREAM_IMAGE: quay.io/fedora-ostree-desktops/silverblue
@@ -27,109 +27,109 @@ jobs:
       matrix:
         major_version: [40]
         include:
-          - is_stable: false
-          - is_stable: true
-            major_version: 40
+        - is_stable: false
+        - is_stable: true
+          major_version: 40
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
 
-      - name: Check for new upstream version
-        id: check-new-version
-        shell: bash
-        run: |
-          if [[ "${{ github.event_name }}" != "schedule" ]]; then
-            echo "Not running an schedule event (${{ github.event_name }}), skipping version check."
+    - name: Check for new upstream version
+      id: check-new-version
+      shell: bash
+      run: |
+        if [[ "${{ github.event_name }}" != "schedule" ]]; then
+          echo "Not running an schedule event (${{ github.event_name }}), skipping version check."
+          echo "continue=true" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        sudo apt-get update -y && sudo apt-get install -y skopeo jq
+        if bash ./check-upstream-version.sh "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.major_version }}" "${{ env.UPSTREAM_IMAGE }}:${{ matrix.major_version }}"; then
             echo "continue=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+        else
+            echo "continue=false" >> "$GITHUB_OUTPUT"
+        fi
 
-          sudo apt-get update -y && sudo apt-get install -y skopeo jq
-          if bash ./check-upstream-version.sh "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.major_version }}" "${{ env.UPSTREAM_IMAGE }}:${{ matrix.major_version }}"; then
-              echo "continue=true" >> "$GITHUB_OUTPUT"
-          else
-              echo "continue=false" >> "$GITHUB_OUTPUT"
-          fi
+    - name: Generate tags
+      if: steps.check-new-version.outputs.continue == 'true'
+      id: generate-tags
+      shell: bash
+      run: |
+        MAJOR_VERSION="${{ matrix.major_version }}"
 
-      - name: Generate tags
-        if: steps.check-new-version.outputs.continue == 'true'
-        id: generate-tags
-        shell: bash
-        run: |
-          MAJOR_VERSION="${{ matrix.major_version }}"
+        # Generate a timestamp for creating an image version history
+        TIMESTAMP="$(date +%Y%m%d)"
 
-          # Generate a timestamp for creating an image version history
-          TIMESTAMP="$(date +%Y%m%d)"
+        BUILD_TAGS=("${MAJOR_VERSION}" "${MAJOR_VERSION}-${TIMESTAMP}" "latest")
+        if [[ "${{ matrix.is_stable }}" == "true" ]]; then
+            BUILD_TAGS+=("stable")
+        fi
 
-          BUILD_TAGS=("${MAJOR_VERSION}" "${MAJOR_VERSION}-${TIMESTAMP}" "latest")
-          if [[ "${{ matrix.is_stable }}" == "true" ]]; then
-              BUILD_TAGS+=("stable")
-          fi
+        echo "Generated the following build tags: "
+        for TAG in "${BUILD_TAGS[@]}"; do
+            echo "${TAG}"
+        done
 
-          echo "Generated the following build tags: "
-          for TAG in "${BUILD_TAGS[@]}"; do
-              echo "${TAG}"
-          done
+        # Shown in rpm-ostree status
+        VERSION="${MAJOR_VERSION}.${TIMESTAMP}.$(date +%H)"
 
-          # Shown in rpm-ostree status
-          VERSION="${MAJOR_VERSION}.${TIMESTAMP}.$(date +%H)"
+        echo "alias_tags=${BUILD_TAGS[*]}" >> "$GITHUB_OUTPUT"
+        echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
-          echo "alias_tags=${BUILD_TAGS[*]}" >> "$GITHUB_OUTPUT"
-          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+    # Build image using Buildah action
+    - name: Build Image
+      if: steps.check-new-version.outputs.continue == 'true'
+      id: build_image
+      uses: redhat-actions/buildah-build@v2
+      with:
+        containerfiles: |
+          ./Containerfile
+        image: ${{ env.IMAGE_NAME }}
+        tags: |
+          ${{ steps.generate-tags.outputs.alias_tags }}
+        build-args: |
+          UPSTREAM_IMAGE=${{ env.UPSTREAM_IMAGE }}
+          FEDORA_MAJOR_VERSION=${{ matrix.major_version }}
+          VERSION=${{ steps.generate-tags.outputs.version }}
+        labels: |
+          org.opencontainers.image.title=${{ env.IMAGE_NAME }}
+          org.opencontainers.image.description=Image for ${{ env.IMAGE_NAME }}
+          org.opencontainers.image.version=${{ steps.generate-tags.outputs.version }}
+        layers: false
+        oci: true
 
-      # Build image using Buildah action
-      - name: Build Image
-        if: steps.check-new-version.outputs.continue == 'true'
-        id: build_image
-        uses: redhat-actions/buildah-build@v2
-        with:
-          containerfiles: |
-            ./Containerfile
-          image: ${{ env.IMAGE_NAME }}
-          tags: |
-            ${{ steps.generate-tags.outputs.alias_tags }}
-          build-args: |
-            UPSTREAM_IMAGE=${{ env.UPSTREAM_IMAGE }}
-            FEDORA_MAJOR_VERSION=${{ matrix.major_version }}
-            VERSION=${{ steps.generate-tags.outputs.version }}
-          labels: |
-            org.opencontainers.image.title=${{ env.IMAGE_NAME }}
-            org.opencontainers.image.description=Image for ${{ env.IMAGE_NAME }}
-            org.opencontainers.image.version=${{ steps.generate-tags.outputs.version }}
-          layers: false
-          oci: true
+    # Push the image to GHCR (Image Registry)
+    - name: Push To GHCR
+      uses: redhat-actions/push-to-registry@v2
+      id: push
+      if: github.event_name != 'pull_request' && steps.check-new-version.outputs.continue == 'true'
+      with:
+        image: ${{ steps.build_image.outputs.image }}
+        tags: ${{ steps.build_image.outputs.tags }}
+        registry: ${{ env.IMAGE_REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
 
-      # Push the image to GHCR (Image Registry)
-      - name: Push To GHCR
-        uses: redhat-actions/push-to-registry@v2
-        id: push
-        if: github.event_name != 'pull_request' && steps.check-new-version.outputs.continue == 'true'
-        with:
-          image: ${{ steps.build_image.outputs.image }}
-          tags: ${{ steps.build_image.outputs.tags }}
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      if: github.event_name != 'pull_request' && steps.check-new-version.outputs.continue == 'true'
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        if: github.event_name != 'pull_request' && steps.check-new-version.outputs.continue == 'true'
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+    # Sign container
+    - uses: sigstore/cosign-installer@v3.5.0
+      if: github.event_name != 'pull_request' && steps.check-new-version.outputs.continue == 'true'
 
-      # Sign container
-      - uses: sigstore/cosign-installer@v3.5.0
-        if: github.event_name != 'pull_request' && steps.check-new-version.outputs.continue == 'true'
-
-      - name: Sign container image
-        if: github.event_name != 'pull_request' && steps.check-new-version.outputs.continue == 'true'
-        run: |
-          echo "${{ env.COSIGN_PRIVATE_KEY }}" > cosign.key
-          cosign sign -y --key cosign.key ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}@${TAGS}
-        env:
-          TAGS: ${{ steps.push.outputs.digest }}
-          COSIGN_EXPERIMENTAL: false
-          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+    - name: Sign container image
+      if: github.event_name != 'pull_request' && steps.check-new-version.outputs.continue == 'true'
+      run: |
+        echo "${{ env.COSIGN_PRIVATE_KEY }}" > cosign.key
+        cosign sign -y --key cosign.key ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}@${TAGS}
+      env:
+        TAGS: ${{ steps.push.outputs.digest }}
+        COSIGN_EXPERIMENTAL: false
+        COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
