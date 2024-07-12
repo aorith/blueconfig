@@ -1,7 +1,7 @@
 name: build-blueconfig
 on:
   schedule:
-  - cron: "35 23 * * *"
+  - cron: "35 04 * * *"
   push:
     branches:
     - master
@@ -14,11 +14,17 @@ env:
   UPSTREAM_IMAGE: quay.io/fedora-ostree-desktops/silverblue
   IMAGE_NAME: blueconfig
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-
+  
+# Prevent multiple workflow runs from racing to ensure that pushes are made
+# sequentialy for the main branch. Also cancel in progress workflow runs for
+# pull requests only.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  
 jobs:
   build-and-push:
     name: Build and push image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: write
