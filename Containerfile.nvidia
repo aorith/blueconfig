@@ -1,0 +1,18 @@
+FROM ghcr.io/aorith/blueconfig:stable
+
+LABEL org.opencontainers.image.description="Customized Fedora Silverblue (Blueconfig - nvidia)"
+
+RUN sed -i "s,^PRETTY_NAME=.*,PRETTY_NAME=\"Fedora Linux $(rpm -E %fedora) \(Blueconfig - nvidia\)\"," /usr/lib/os-release
+
+RUN rpm-ostree install \
+            akmod-nvidia \
+            libva-utils \
+            nvidia-vaapi-driver \
+            vdpauinfo \
+            vulkan \
+            xorg-x11-drv-nvidia-cuda \
+        && akmods --force \
+        && ostree container commit
+
+# this might not be needed at some point when ostree systems will support the standard way to specify this.
+# rpm-ostree kargs --append=rd.driver.blacklist=nouveau --append=modprobe.blacklist=nouveau --append=nvidia-drm.modeset=1
