@@ -1,21 +1,5 @@
 #!/usr/bin/env bash
-
 set -eux -o pipefail
-
-RELEASE="$(rpm -E %fedora)"
-
-# Rpm Fusion
-wget -P /tmp/rpms/ \
-    "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${RELEASE}.noarch.rpm" \
-    "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${RELEASE}.noarch.rpm"
-rpm-ostree install /tmp/rpms/*.rpm fedora-repos-archive
-
-# Docker
-wget -P /etc/yum.repos.d/ \
-    "https://download.docker.com/linux/fedora/docker-ce.repo"
-wget -P /tmp/ \
-    "https://download.docker.com/linux/fedora/gpg"
-install -o 0 -g 0 -m644 "/tmp/gpg" "/etc/pki/rpm-gpg/docker-ce.gpg"
 
 # Package removal
 rpm-ostree override remove noopenh264 --install openh264
@@ -107,23 +91,3 @@ PACKAGES_TO_INSTALL=(
 )
 
 rpm-ostree install "${PACKAGES_TO_INSTALL[@]}"
-
-# Enable automatic updates
-sed -i 's,.*AutomaticUpdatePolicy=.*,AutomaticUpdatePolicy=stage,g' /etc/rpm-ostreed.conf
-systemctl enable rpm-ostreed-automatic.timer
-systemctl enable rpm-ostree-countme.timer
-
-# Enable sockets
-systemctl enable docker.socket
-systemctl enable libvirtd.socket
-
-# Disable suspend & hibernate
-systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
-
-# Cleanup
-fc-cache -sf
-rm -rf /tmp/*
-mkdir -p /var/tmp
-chmod -R 1777 /var/tmp
-
-ostree container commit

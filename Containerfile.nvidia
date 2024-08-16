@@ -11,8 +11,12 @@ RUN rpm-ostree install \
             vdpauinfo \
             vulkan \
             xorg-x11-drv-nvidia-cuda \
-        && akmods --force \
-        && ostree container commit
+        && fc-cache --system-only --really-force --verbose \
+        rm -rf /tmp/* \
+        && ostree container commit \
+        && mkdir -p /var/lib \
+        && mkdir -p /var/tmp && chmod -R 1777 /var/tmp
 
+# Secureboot might need to be disabled: /usr/share/doc/akmods/README.secureboot
 # this might not be needed at some point when ostree systems will support the standard way to specify this.
 # rpm-ostree kargs --append=rd.driver.blacklist=nouveau --append=modprobe.blacklist=nouveau --append=nvidia-drm.modeset=1
