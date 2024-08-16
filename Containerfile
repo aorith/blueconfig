@@ -10,8 +10,7 @@ LABEL org.opencontainers.image.licenses="MIT"
 
 RUN sed -i "s,^PRETTY_NAME=.*,PRETTY_NAME=\"Fedora Linux $(rpm -E %fedora) \(Blueconfig\)\"," /usr/lib/os-release
 
-COPY etc /etc
-COPY usr /usr
+COPY rootfs /
 
 ADD build.sh /tmp/build.sh
 RUN bash /tmp/build.sh

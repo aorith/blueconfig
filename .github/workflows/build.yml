@@ -30,10 +30,13 @@ jobs:
       packages: write
       id-token: write
     strategy:
+      max-parallel: 1
       matrix:
-        variant: ["vanilla", "nvidia"]
         include:
-        - major_version: 40
+        - variant: "vanilla"
+          major_version: 40
+        - variant: "nvidia"
+          major_version: 40
 
     steps:
     - name: Checkout
