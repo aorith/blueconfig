@@ -17,14 +17,6 @@ wget -P /tmp/ \
     "https://download.docker.com/linux/fedora/gpg"
 install -o 0 -g 0 -m644 "/tmp/gpg" "/etc/pki/rpm-gpg/docker-ce.gpg"
 
-# Variants
-case "$1" in
-nvidia)
-    rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia-cuda
-    ;;
-*) ;;
-esac
-
 # Package removal
 rpm-ostree override remove noopenh264 --install openh264
 rpm-ostree override remove \
