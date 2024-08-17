@@ -16,7 +16,7 @@ env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 # Prevent multiple workflow runs from racing to ensure that pushes are made
-# sequentialy for the main branch. Also cancel in progress workflow runs for
+# sequentially for the main branch. Also cancel in progress workflow runs for
 # pull requests only.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -33,10 +33,9 @@ jobs:
       max-parallel: 1
       matrix:
         include:
-        - variant: "vanilla"
+        - variant: "stable"
           major_version: 40
-        - variant: "nvidia"
-          major_version: 40
+          container_file: "Containerfile"
 
     steps:
     - name: Checkout
@@ -52,6 +51,7 @@ jobs:
           exit 0
         fi
 
+        export DEBIAN_FRONTEND=noninteractive
         sudo apt-get update -y && sudo apt-get install -y skopeo jq
         if bash ./check-upstream-version.sh "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.major_version }}" "${{ env.UPSTREAM_IMAGE }}:${{ matrix.major_version }}"; then
             echo "continue=true" >> "$GITHUB_OUTPUT"
@@ -59,40 +59,13 @@ jobs:
             echo "continue=false" >> "$GITHUB_OUTPUT"
         fi
 
-    - name: Generate tags
+    - name: Generate variables
       if: steps.check-new-version.outputs.continue == 'true'
-      id: generate-tags
+      id: generate-vars
       shell: bash
       run: |
-        MAJOR_VERSION="${{ matrix.major_version }}"
-        VARIANT="${{ matrix.variant }}"
-
-        case "$VARIANT" in
-          vanilla)
-            BUILD_TAGS=("stable")
-            CONTAINER_FILE="Containerfile"
-            ;;
-          nvidia)
-            BUILD_TAGS=("nvidia")
-            CONTAINER_FILE="Containerfile.nvidia"
-            ;;
-          *)
-            echo "Unknown variant '$VARIANT'."
-            exit 1
-            ;;
-        esac
-
-        echo "Generated the following build tags: "
-        for TAG in "${BUILD_TAGS[@]}"; do
-            echo "${TAG}"
-        done
-
         # Shown in rpm-ostree status
-        VERSION="${MAJOR_VERSION}.$(date +%Y%m%d).$(date +%H)"
-
-        echo "alias_tags=${BUILD_TAGS[*]}" >> "$GITHUB_OUTPUT"
-        echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-        echo "container_file=${CONTAINER_FILE}" >> "$GITHUB_OUTPUT"
+        echo "version=${{ matrix.major_version }}.$(date +%Y%m%d).$(date +%H)" >> "$GITHUB_OUTPUT"
 
     # Build image using Buildah action
     - name: Build Image
@@ -100,16 +73,15 @@ jobs:
       id: build_image
       uses: redhat-actions/buildah-build@v2
       with:
-        containerfiles: |
-          ./${{ steps.generate-tags.outputs.container_file }}
         image: ${{ env.IMAGE_NAME }}
+        containerfiles: |
+          ./${{ matrix.container_file }}
         tags: |
-          ${{ steps.generate-tags.outputs.alias_tags }}
+          ${{ matrix.variant }}
         build-args: |
           UPSTREAM_IMAGE=${{ env.UPSTREAM_IMAGE }}
           FEDORA_MAJOR_VERSION=${{ matrix.major_version }}
-          VERSION=${{ steps.generate-tags.outputs.version }}
-        layers: false
+          VERSION=VERSION=${{ steps.generate-vars.outputs.version }}
         oci: true
 
     # Push the image to GHCR (Image Registry)

@@ -50,6 +50,7 @@ PACKAGES_TO_INSTALL=(
     "libva-utils"
     "mesa-va-drivers-freeworld"
     "pipewire-codec-aptx"
+    "vulkan"
 
     # Virtualisation & containers
     "buildah"
