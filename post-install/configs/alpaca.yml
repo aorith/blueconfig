@@ -1,0 +1,36 @@
+# Common
+# --------------------------------------------------
+common_user:
+  name: 'aorith'
+  home: '/var/home/aorith'
+  uid: 1000
+  gid: 1000
+
+# Filesystem role
+# --------------------------------------------------
+run_filesystem_role: yes
+
+filesystem_folders: []
+
+# dump: (backups) see 'man dump 8'
+# passno: see 'man fsck 8' it's the order for fsck, usually root is 0 and the rest is 2
+filesystem_mounts:
+  - { src: "LABEL=DATOS",  path: "/var/mnt/data",  fstype: "ext4", opts: "defaults,noatime", state: "mounted", dump: '0', passno: '2' }
+
+filesystem_symlinks:
+  - { link_src: "/var/mnt/data/syncthing", dest: "/var/home/aorith/Syncthing" }
+
+# Systemd role
+# --------------------------------------------------
+run_systemd_role: yes
+
+systemd_user:
+  syncthing:
+    enable: yes
+  templates:
+    - { src: "user/units/syncthing.alpaca.service.j2", dest: "syncthing.service" }
+  linger:
+    enable: yes
+
+systemd_system:
+  wake_on_lan: []

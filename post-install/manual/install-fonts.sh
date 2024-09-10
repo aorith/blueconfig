@@ -35,10 +35,11 @@ install_from_url() {
     rm -f "/tmp/${fn}.zip"
 }
 
-install_nerd_font 3.1.1 Hack
-install_nerd_font 3.1.1 JetBrainsMono
-install_nerd_font 3.1.1 Monaspace
-install_nerd_font 3.1.1 NerdFontsSymbolsOnly
+install_nerd_font 3.2.1 Hack
+install_nerd_font 3.2.1 JetBrainsMono
+install_nerd_font 3.2.1 Monaspace
+install_nerd_font 3.2.1 NerdFontsSymbolsOnly
+install_nerd_font 3.2.1 SourceCodePro
 
 install_iosevka_font 28.0.7 Iosevka
 install_iosevka_font 28.0.7 IosevkaFixed
