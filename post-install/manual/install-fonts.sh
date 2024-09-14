@@ -35,13 +35,17 @@ install_from_url() {
     rm -f "/tmp/${fn}.zip"
 }
 
-install_nerd_font 3.2.1 Hack
-install_nerd_font 3.2.1 JetBrainsMono
-install_nerd_font 3.2.1 Monaspace
-install_nerd_font 3.2.1 NerdFontsSymbolsOnly
-install_nerd_font 3.2.1 SourceCodePro
+NERD_VER=3.2.1
 
-install_iosevka_font 28.0.7 Iosevka
-install_iosevka_font 28.0.7 IosevkaFixed
+install_nerd_font "$NERD_VER" Hack
+install_nerd_font "$NERD_VER" JetBrainsMono
+install_nerd_font "$NERD_VER" Monaspace
+install_nerd_font "$NERD_VER" NerdFontsSymbolsOnly
+install_nerd_font "$NERD_VER" SourceCodePro
+install_nerd_font "$NERD_VER" Recursive
+install_nerd_font "$NERD_VER" Meslo
+
+install_iosevka_font 31.6.1 Iosevka
+install_iosevka_font 31.6.1 IosevkaFixed
 
 install_from_url Ubuntu "https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip"
