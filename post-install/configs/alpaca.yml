@@ -34,3 +34,6 @@ systemd_user:
 
 systemd_system:
   wake_on_lan: []
+
+systemd_disable_sleep:
+  enable: yes

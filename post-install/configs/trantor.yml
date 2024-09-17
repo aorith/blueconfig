@@ -11,22 +11,22 @@ common_user:
 run_filesystem_role: yes
 
 filesystem_folders:
-  - { path: "/mnt/storage",       owner: 'root',                   group: 'root',                   mode: '0775' }
-  - { path: "/mnt/storage/disk1", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775' }
-  - { path: "/mnt/storage/disk2", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775' }
-  - { path: "/mnt/storage/tank",  owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775' }
+- {path: "/mnt/storage", owner: 'root', group: 'root', mode: '0775'}
+- {path: "/mnt/storage/disk1", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775'}
+- {path: "/mnt/storage/disk2", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775'}
+- {path: "/mnt/storage/tank", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775'}
 
 # dump: (backups) see 'man dump 8'
 # passno: see 'man fsck 8' it's the order for fsck, usually root is 0 and the rest is 2
 filesystem_mounts:
-  - { src: "LABEL=tank",  path: "/mnt/storage/tank",  fstype: "btrfs", opts: "defaults,compress=zstd:1", state: "mounted", dump: '0', passno: '0' }
-  - { src: "LABEL=DISK1", path: "/mnt/storage/disk1", fstype: "ext4",  opts: "defaults,noatime",         state: "mounted", dump: '0', passno: '2' }
-  - { src: "LABEL=DISK2", path: "/mnt/storage/disk2", fstype: "ext4",  opts: "defaults,noatime",         state: "mounted", dump: '0', passno: '2' }
+- {src: "LABEL=tank", path: "/mnt/storage/tank", fstype: "btrfs", opts: "defaults,compress=zstd:1", state: "mounted", dump: '0', passno: '0'}
+- {src: "LABEL=DISK1", path: "/mnt/storage/disk1", fstype: "ext4", opts: "defaults,noatime", state: "mounted", dump: '0', passno: '2'}
+- {src: "LABEL=DISK2", path: "/mnt/storage/disk2", fstype: "ext4", opts: "defaults,noatime", state: "mounted", dump: '0', passno: '2'}
 
 filesystem_symlinks:
-  - { link_src: "/mnt/storage", dest: "/var/home/aorith/storage" }
-  - { link_src: "/mnt/storage/tank/data/syncthing", dest: "/var/home/aorith/Syncthing" }
-  - { link_src: "/mnt/storage/tank/work-in-progress", dest: "/var/home/aorith/work-in-progress" }
+- {link_src: "/mnt/storage", dest: "/var/home/aorith/storage"}
+- {link_src: "/mnt/storage/tank/data/syncthing", dest: "/var/home/aorith/Syncthing"}
+- {link_src: "/mnt/storage/tank/work-in-progress", dest: "/var/home/aorith/work-in-progress"}
 
 # Systemd role
 # --------------------------------------------------
@@ -36,11 +36,13 @@ systemd_user:
   syncthing:
     enable: yes
   templates:
-    - { src: "user/units/syncthing.trantor.service.j2", dest: "syncthing.service" }
+  - {src: "user/units/syncthing.trantor.service.j2", dest: "syncthing.service"}
   linger:
     enable: yes
 
 systemd_system:
   wake_on_lan:
-    - { name: "enp8s0", macaddr: "a8:5e:45:b3:10:95" }
+  - {name: "enp8s0", macaddr: "a8:5e:45:b3:10:95",}
 
+systemd_disable_sleep:
+  enable: yes

@@ -27,3 +27,26 @@ These images are signed with sisgstore's [cosign](https://docs.sigstore.dev/cosi
     cosign verify --key cosign.pub ghcr.io/aorith/blueconfig
 
 If you're forking this repo you should [read the docs](https://docs.github.com/en/actions/security-guides/encrypted-secrets) on keeping secrets in github. You need to [generate a new keypair](https://docs.sigstore.dev/cosign/overview/) with cosign. The public key can be in your public repo (your users need it to check the signatures), and you can paste the private key in Settings -> Secrets -> Actions.
+
+## Local testing
+
+This is for easy testing on a VM.
+
+```sh
+# Run a local registry
+podman run --rm -p 5000:5000 registry:2
+
+# Build the image
+podman build . -t localhost:5000/blueconfig
+
+# Push the image
+podman push --tls-verify=false localhost:5000/blueconfig
+```
+
+On the VM create the file `/etc/containers/registries.conf.d/local.conf:
+
+```conf
+[[registry]]
+location = "<host IP>:5000"
+insecure = true
+```

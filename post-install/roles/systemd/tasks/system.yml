@@ -5,5 +5,19 @@
     dest: "/etc/systemd/network/50-wol-{{ item.name }}.link"
     owner: root
     group: root
-  become: yes
+  become: true
   loop: "{{ systemd_system.wake_on_lan }}"
+
+- name: Disable sleep, suspend, hibernate, ...
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: false
+    masked: true
+  with_items:
+    - sleep.target
+    - suspend.target
+    - hibernate.target
+    - hybrid-sleep.target
+  when:
+    - systemd_disable_sleep is defined
+    - systemd_disable_sleep.enable

@@ -7,5 +7,6 @@ After=network-online.target
 [Service]
 Type=simple
 ExecStartPre=/usr/bin/flatpak --system uninstall --unused -y --noninteractive
-ExecStart=/usr/bin/flatpak --system update -y --noninteractive
+ExecStartPre=/usr/bin/flatpak --system update -y --noninteractive
+ExecStart=/usr/bin/flatpak update -y --noninteractive
 ExecStartPost=/usr/bin/flatpak --system repair

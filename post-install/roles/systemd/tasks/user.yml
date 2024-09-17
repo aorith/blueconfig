@@ -1,5 +1,5 @@
 ---
-- name:
+- name: Create systemd/user directory
   ansible.builtin.file:
     path: ~/.config/systemd/user
     state: directory

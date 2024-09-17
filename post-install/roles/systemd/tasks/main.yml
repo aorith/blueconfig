@@ -4,6 +4,6 @@
   loop:
     - user.yml
     - system.yml
-  loop_control: # avoids 'item' variable overwritting in inner tasks
+  loop_control: # avoids 'item' variable overwriting in inner tasks
     loop_var: outer_item
   when: run_systemd_role

@@ -7,7 +7,7 @@
     mode: "{{ item.mode }}"
     state: directory
   loop: "{{ filesystem_folders }}"
-  become: yes
+  become: true
 
 - name: Configure mounts
   ansible.posix.mount:
@@ -19,7 +19,7 @@
     dump: "{{ item.dump }}"
     passno: "{{ item.passno }}"
   loop: "{{ filesystem_mounts }}"
-  become: yes
+  become: true
 
 - name: Create required symlinks
   ansible.builtin.file:
@@ -27,4 +27,4 @@
     dest: "{{ item.dest }}"
     state: link
   loop: "{{ filesystem_symlinks }}"
-  become: yes
+  become: true
