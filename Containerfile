@@ -4,8 +4,16 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-40}"
 FROM quay.io/fedora/fedora:${FEDORA_MAJOR_VERSION} AS builder
 
 WORKDIR /tmp
-COPY install-nix.sh /tmp/install-nix.sh
-RUN bash /tmp/install-nix.sh
+
+RUN touch /.dockerenv \
+    && dnf install -y xz --setopt=install_weak_deps=False \
+    && useradd nix && mkdir -m 0755 /nix && chown nix /nix
+
+USER nix
+RUN curl -fLs https://nixos.org/nix/install | sh -s -- --no-daemon --yes
+
+USER root
+RUN cp -pr /home/nix/.local/state/nix/profiles/profile-1-link /nix/var/nix/profiles/default
 
 FROM ${UPSTREAM_IMAGE}:${FEDORA_MAJOR_VERSION}
 
