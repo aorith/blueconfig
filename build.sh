@@ -128,6 +128,11 @@ systemctl enable docker.socket libvirtd.socket
 # Required only if we install new system fonts
 # fc-cache --system-only --really-force --verbose
 
+# Disable repos (the sed command replaces the first match only)
+find /etc/yum.repos.d/ -name "*.repo" -exec sed -i '0,/enabled=.*/s//enabled=0/' {} \;
+# Keep fedora enabled
+sed -i '0,/enabled=.*/s//enabled=1/' /etc/yum.repos.d/fedora.repo
+
 rm -rf /tmp/*
 rpm-ostree cleanup --repomd
 ostree container commit
