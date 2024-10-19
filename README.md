@@ -50,3 +50,9 @@ On the VM create the file `/etc/containers/registries.conf.d/local.conf:
 location = "<host IP>:5000"
 insecure = true
 ```
+
+Then rebase:
+
+```sh
+sudo rpm-ostree rebase ostree-unverified-registry:HOST_IP:5000/blueconfig:latest
+```
