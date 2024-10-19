@@ -43,7 +43,7 @@ rpm-ostree override remove \
     --install=mesa-vdpau-drivers-freeworld
 
 # x86_64 only
-if [[ "$(rpm -E %{_arch})" == "x86_64" ]]; then
+if [[ "$(rpm -E '%{_arch}')" == "x86_64" ]]; then
     rpm-ostree install steam-devices
     rpm-ostree install intel-media-driver libva-intel-driver
 fi
@@ -78,6 +78,7 @@ PACKAGES_TO_INSTALL=(
 
     # Drivers & misc
     "alsa-firmware"
+    "iwd"
     "libva-utils"
     "pipewire-codec-aptx"
     "vulkan"
