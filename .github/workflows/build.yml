@@ -34,7 +34,7 @@ jobs:
       matrix:
         include:
         - variant: "stable"
-          major_version: 40
+          major_version: 41
           container_file: "Containerfile"
 
     steps:
