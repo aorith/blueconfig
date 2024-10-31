@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -eux -o pipefail
 
-rpm-ostree install gcc make
-
 # RPM Fusion
 rpm-ostree install \
     "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
@@ -48,33 +46,21 @@ if [[ "$(rpm -E '%{_arch}')" == "x86_64" ]]; then
     rpm-ostree install intel-media-driver libva-intel-driver
 fi
 
-# Doesn't hurt to have
-rpm-ostree install libva-nvidia-driver
-
 # Package installation
 PACKAGES_TO_INSTALL=(
     # Desktop
     "alacritty"
     "wl-clipboard"
-    "xclip"
-
-    # Media
-    "mpv"
-    "vlc"
 
     # Utils
     "android-tools"
-    "bootc"
     "make"
-    "net-tools"
     "netcat"
     "nvme-cli"
     "nvtop"
-    "ripgrep"
     "smartmontools"
     "vim"
     "wireguard-tools"
-    "zstd"
 
     # Drivers & misc
     "alsa-firmware"
@@ -84,7 +70,6 @@ PACKAGES_TO_INSTALL=(
     "vulkan"
 
     # Virtualisation & containers
-    "buildah"
     "cloud-utils"
     "distrobox"
     "libvirt"
@@ -102,7 +87,6 @@ PACKAGES_TO_INSTALL=(
 
     # Extras
     "flameshot"
-    "openssl"
     "python3-psutil"
     "syncthing"
 
@@ -129,9 +113,9 @@ systemctl enable docker.socket libvirtd.socket
 # fc-cache --system-only --really-force --verbose
 
 # Disable repos (the sed command replaces the first match only)
-find /etc/yum.repos.d/ -name "*.repo" -exec sed -i '0,/enabled=.*/s//enabled=0/' {} \;
+#find /etc/yum.repos.d/ -name "*.repo" -exec sed -i '0,/enabled=.*/s//enabled=0/' {} \;
 # Keep fedora enabled
-sed -i '0,/enabled=.*/s//enabled=1/' /etc/yum.repos.d/fedora.repo
+#sed -i '0,/enabled=.*/s//enabled=1/' /etc/yum.repos.d/fedora.repo
 
 rm -rf /tmp/*
 rpm-ostree cleanup --repomd
