@@ -105,6 +105,7 @@ systemctl enable flatpak-system-update.timer
 systemctl enable rpm-ostreed-automatic.timer
 systemctl enable rpm-ostree-countme.timer
 systemctl enable nix.mount
+systemctl enable podman-auto-update.timer
 
 # Enable sockets
 systemctl enable docker.socket libvirtd.socket
