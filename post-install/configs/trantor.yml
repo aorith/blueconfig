@@ -8,7 +8,7 @@ common_user:
 
 # Filesystem role
 # --------------------------------------------------
-run_filesystem_role: yes
+run_filesystem_role: true
 
 filesystem_folders:
 - {path: "/mnt/storage", owner: 'root', group: 'root', mode: '0775'}
@@ -30,19 +30,25 @@ filesystem_symlinks:
 
 # Systemd role
 # --------------------------------------------------
-run_systemd_role: yes
+run_systemd_role: true
 
 systemd_user:
   syncthing:
-    enable: yes
-  templates:
-  - {src: "user/units/syncthing.trantor.service.j2", dest: "syncthing.service"}
+    enable: true
+    templates:
+    - {src: "user/units/syncthing.trantor.service.j2", dest: "syncthing.service"}
   linger:
-    enable: yes
+    enable: true
+
+systemd_quadlets:
+  syncthing:
+    enable: true
+    templates:
+    - {src: "user/containers/syncthing.trantor.container.j2", dest: "syncthing.container",}
 
 systemd_system:
   wake_on_lan:
   - {name: "enp8s0", macaddr: "a8:5e:45:b3:10:95",}
 
 systemd_disable_sleep:
-  enable: yes
+  enable: true

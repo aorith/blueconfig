@@ -1,4 +1,3 @@
----
 - name: Create systemd/user directory
   ansible.builtin.file:
     path: ~/.config/systemd/user
@@ -8,34 +7,59 @@
   ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ common_user.home }}/.config/systemd/user/{{ item.dest }}"
-  loop: "{{ systemd_user.templates }}"
+  loop: "{{ systemd_user.syncthing.templates }}"
+  when: systemd_user.syncthing.enable
+
+- name: Create containers/systemd directory
+  ansible.builtin.file:
+    path: ~/.config/containers/systemd/user
+    state: directory
+
+- name: Copy systemd container files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ common_user.home }}/.config/containers/systemd/{{ item.dest }}"
+  loop: "{{ systemd_quadlets.syncthing.templates }}"
+  when: systemd_quadlets.syncthing.enable
+
+- name: Copy systemd container network file
+  ansible.builtin.copy:
+    src: "syncthing.network"
+    dest: "{{ common_user.home }}/.config/containers/systemd/syncthing.network"
+  when: systemd_quadlets.syncthing.enable
 
 - name: Reload Systemd
   ansible.builtin.systemd:
-    daemon_reload: yes
+    daemon_reload: true
     scope: user
 
 - name: Enable Syncthing service
   ansible.builtin.systemd:
     name: syncthing
     state: started
-    enabled: yes
+    enabled: true
     scope: user
-  when: systemd_user.syncthing.enable
+  when: systemd_user.syncthing.enable or systemd_quadlets.syncthing.enable
+
+
+- name: Enable podman podman-auto-update.timer
+  ansible.builtin.systemd:
+    name: podman-auto-update.timer
+    enabled: true
+    scope: user
 
 # To allow for systemd services to be started at boot without login (and continue running after logout) of the individual users, you need to enable lingering. You can do that via loginctl enable-linger <username>. It is buried in the manpages of podman-generate-systemd:
 # http://docs.podman.io/en/latest/markdown/podman-generate-systemd.1.html
 
-- name: Check if lingering is enabled for user {{ common_user.name }}
+- name: "Check if lingering is enabled for user {{ common_user.name }}"
   ansible.builtin.stat:
     path: "/var/lib/systemd/linger/{{ common_user.name }}"
   register: linger
-  changed_when: False
+  changed_when: false
   when: systemd_user.linger.enable
 
-- name: Enable lingering for user {{ common_user.name }}
+- name: "Enable lingering for user {{ common_user.name }}"
   ansible.builtin.command: "loginctl enable-linger {{ common_user.name }}"
   when:
-    - not linger.stat.exists
-    - systemd_user.linger.enable
-
+  - not linger.stat.exists
+  - systemd_user.linger.enable

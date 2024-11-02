@@ -2,9 +2,15 @@
 set -eux
 cd "$(dirname -- "$0")" || exit 1
 
-[[ $(id -u) -ne 0 ]] || { echo "Do not run as root."; exit 1; }
-[[ -f "$(pwd)/configs/${HOSTNAME}.yml" ]] \
-	|| { echo "Configuration file for '${HOSTNAME}' not found at: '$(pwd)/configs/${HOSTNAME}.yml'."; exit 1; }
+[[ $(id -u) -ne 0 ]] || {
+    echo "Do not run as root."
+    exit 1
+}
+
+[[ -f "${PWD}/configs/${HOSTNAME}.yml" ]] || {
+    echo "Configuration file for '${HOSTNAME}' not found at: '$(pwd)/configs/${HOSTNAME}.yml'."
+    exit 1
+}
 
 _activate_venv() {
     set +x
