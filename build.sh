@@ -71,7 +71,6 @@ PACKAGES_TO_INSTALL=(
 
     # Virtualisation & containers
     "cloud-utils"
-    "distrobox"
     "libvirt"
     "libvirt-daemon-config-network"
     "libvirt-daemon-kvm"
@@ -88,7 +87,6 @@ PACKAGES_TO_INSTALL=(
     # Extras
     "flameshot"
     "python3-psutil"
-    "syncthing"
 
     # Logitech unifying
     "solaar"
@@ -105,7 +103,6 @@ systemctl enable flatpak-system-update.timer
 systemctl enable rpm-ostreed-automatic.timer
 systemctl enable rpm-ostree-countme.timer
 systemctl enable nix.mount
-systemctl enable podman-auto-update.timer
 
 # Enable sockets
 systemctl enable docker.socket libvirtd.socket
@@ -114,9 +111,8 @@ systemctl enable docker.socket libvirtd.socket
 # fc-cache --system-only --really-force --verbose
 
 # Disable repos (the sed command replaces the first match only)
-#find /etc/yum.repos.d/ -name "*.repo" -exec sed -i '0,/enabled=.*/s//enabled=0/' {} \;
-# Keep fedora enabled
-#sed -i '0,/enabled=.*/s//enabled=1/' /etc/yum.repos.d/fedora.repo
+sed -i '0,/enabled=.*/s//enabled=0/' /etc/yum.repos.d/fedora-cisco-openh264.repo
+find /etc/yum.repos.d/ -type f -name "*fusion*.repo" -exec sed -i '0,/enabled=.*/s//enabled=0/' {} \;
 
 rm -rf /tmp/*
 rpm-ostree cleanup --repomd
