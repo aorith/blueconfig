@@ -1,8 +1,14 @@
 - name: Create systemd user directories
   ansible.builtin.file:
-    path: "{{ item.dest_dir }}"
+    path: "{{ common_user.home }}/{{ item.dest_dir }}"
     state: directory
   loop: "{{ systemd_user.templates }}"
+
+- name: Create systemd user directories
+  ansible.builtin.file:
+    path: "{{ common_user.home }}/{{ item.dest_dir }}"
+    state: directory
+  loop: "{{ systemd_user.files }}"
 
 - name: Copy systemd template files
   ansible.builtin.template:
