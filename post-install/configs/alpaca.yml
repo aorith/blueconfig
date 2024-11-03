@@ -27,15 +27,12 @@ filesystem_symlinks:
 run_systemd_role: true
 
 systemd_user:
-  files:
-  - {src: "syncthing.container", dest_dir: ".config/containers/systemd", dest_file: "syncthing.container"}
+  files: []
+    #- {src: "syncthing.container", dest_dir: ".config/containers/systemd", dest_file: "syncthing.container"}
   templates:
-  - {src: "user/containers/syncthing.{{ common_hostname }}.env.j2", dest_dir: ".config/containers/systemd", dest_file: "syncthing.env"}
-  linger:
+    #- {src: "user/containers/syncthing.{{ common_hostname }}.env.j2", dest_dir: ".config/containers/systemd", dest_file: "syncthing.env"}
+  linger: []
     enable: true
-  quadlets:
-    syncthing:
-      enable: true
 
 systemd_system:
   wake_on_lan: []

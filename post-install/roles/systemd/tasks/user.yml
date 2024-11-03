@@ -1,10 +1,10 @@
-- name: Create systemd user directories
+- name: Create systemd user directories for templates
   ansible.builtin.file:
     path: "{{ common_user.home }}/{{ item.dest_dir }}"
     state: directory
   loop: "{{ systemd_user.templates }}"
 
-- name: Create systemd user directories
+- name: Create systemd user directories for files
   ansible.builtin.file:
     path: "{{ common_user.home }}/{{ item.dest_dir }}"
     state: directory
@@ -26,14 +26,6 @@
   ansible.builtin.systemd:
     daemon_reload: true
     scope: user
-
-- name: Enable Syncthing service
-  ansible.builtin.systemd:
-    name: syncthing
-    state: started
-    enabled: true
-    scope: user
-  when: systemd_user.quadlets.syncthing.enable
 
 - name: Enable podman podman-auto-update.timer
   ansible.builtin.systemd:
