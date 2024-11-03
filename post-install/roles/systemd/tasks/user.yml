@@ -1,32 +1,20 @@
-- name: Create systemd/user directory
+- name: Create systemd user directories
   ansible.builtin.file:
-    path: ~/.config/systemd/user
+    path: "{{ item.dest_dir }}"
     state: directory
+  loop: "{{ systemd_user.templates }}"
 
-- name: Copy systemd unit files
+- name: Copy systemd template files
   ansible.builtin.template:
     src: "{{ item.src }}"
-    dest: "{{ common_user.home }}/.config/systemd/user/{{ item.dest }}"
-  loop: "{{ systemd_user.syncthing.templates }}"
-  when: systemd_user.syncthing.enable
+    dest: "{{ common_user.home }}/{{ item.dest_dir }}/{{ item.dest_file }}"
+  loop: "{{ systemd_user.templates }}"
 
-- name: Create containers/systemd directory
-  ansible.builtin.file:
-    path: ~/.config/containers/systemd/user
-    state: directory
-
-- name: Copy systemd container files
-  ansible.builtin.template:
-    src: "{{ item.src }}"
-    dest: "{{ common_user.home }}/.config/containers/systemd/{{ item.dest }}"
-  loop: "{{ systemd_quadlets.syncthing.templates }}"
-  when: systemd_quadlets.syncthing.enable
-
-- name: Copy systemd container network file
+- name: Copy systemd files
   ansible.builtin.copy:
-    src: "syncthing.network"
-    dest: "{{ common_user.home }}/.config/containers/systemd/syncthing.network"
-  when: systemd_quadlets.syncthing.enable
+    src: "{{ item.src }}"
+    dest: "{{ common_user.home }}/{{ item.dest_dir }}/{{ item.dest_file }}"
+  loop: "{{ systemd_user.files }}"
 
 - name: Reload Systemd
   ansible.builtin.systemd:
@@ -39,8 +27,7 @@
     state: started
     enabled: true
     scope: user
-  when: systemd_user.syncthing.enable or systemd_quadlets.syncthing.enable
-
+  when: systemd_user.quadlets.syncthing.enable
 
 - name: Enable podman podman-auto-update.timer
   ansible.builtin.systemd:

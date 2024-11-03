@@ -4,19 +4,27 @@ Wants=network-online.target
 After=network-online.target
 After=local-fs.target
 
-[Container]
-EnvironmentFile=syncthing.env
+[Service]
+Restart=on-failure
+RestartSec=1
+SuccessExitStatus=3 4
+RestartForceExitStatus=3 4
 
+EnvironmentFile=/%h/.config/containers/systemd/syncthing.env
+
+# man quadlet 5
+[Container]
 ContainerName=syncthing
+HostName=%l
 
 Image=docker.io/syncthing/syncthing
+Exec=serve --gui-address=${ST_GUI_ADDRESS} --no-browser --no-restart --no-upgrade --no-default-folder --logflags=0
 
 AutoUpdate=registry
-Pull=always
+#Pull=always
 
-Volume=/mnt/data/syncthing/_config/syncthing:/var/syncthing/config:Z
-Volume=/var/mnt/data/syncthing:/var/mnt/data/syncthing:z
-
+Volume=${ST_CONFIG_PATH}:/var/syncthing/config:Z
+Volume=${ST_DATA_PATH}:/var/mnt/data/syncthing:z
 
 UserNS=keep-id:uid=1000,gid=1000
 
@@ -27,12 +35,6 @@ Network=host
 #PublishPort=22000:22000/tcp
 #PublishPort=22000:22000/udp
 #PublishPort=21027:21027/udp
-
-[Service]
-Restart=on-failure
-RestartSec=1
-SuccessExitStatus=3 4
-RestartForceExitStatus=3 4
 
 [Install]
 WantedBy=default.target

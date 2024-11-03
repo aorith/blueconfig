@@ -1,5 +1,7 @@
 # Common
 # --------------------------------------------------
+common_hostname: trantor
+
 common_user:
   name: 'aorith'
   home: '/var/home/aorith'
@@ -33,18 +35,15 @@ filesystem_symlinks:
 run_systemd_role: true
 
 systemd_user:
-  syncthing:
-    enable: true
-    templates:
-    - {src: "user/units/syncthing.trantor.service.j2", dest: "syncthing.service"}
+  files:
+  - {src: "syncthing.container", dest_dir: ".config/containers/systemd", dest_file: "syncthing.container"}
+  templates:
+  - {src: "user/containers/syncthing.{{ common_hostname }}.env.j2", dest_dir: ".config/containers/systemd", dest_file: "syncthing.env"}
   linger:
     enable: true
-
-systemd_quadlets:
-  syncthing:
-    enable: true
-    templates:
-    - {src: "user/containers/syncthing.trantor.container.j2", dest: "syncthing.container",}
+  quadlets:
+    syncthing:
+      enable: true
 
 systemd_system:
   wake_on_lan:
@@ -52,3 +51,5 @@ systemd_system:
 
 systemd_disable_sleep:
   enable: true
+
+# vim:ft=yaml.ansible:
