@@ -27,24 +27,18 @@ rpm-ostree override remove \
     libpostproc-free \
     libswresample-free \
     libswscale-free \
-    --install=ffmpeg \
-    --install=ffmpegthumbnailer \
-    --install=gstreamer1-plugin-libav \
-    --install=gstreamer1-plugins-bad-free-extras \
-    --install=gstreamer1-plugins-bad-freeworld \
-    --install=gstreamer1-plugins-ugly \
-    --install=gstreamer1-vaapi
+    --install ffmpeg \
+    --install ffmpegthumbnailer \
+    --install gstreamer1-plugin-libav \
+    --install gstreamer1-plugins-bad-free-extras \
+    --install gstreamer1-plugins-bad-freeworld \
+    --install gstreamer1-plugins-ugly \
+    --install gstreamer1-vaapi
 
 rpm-ostree override remove \
     mesa-va-drivers \
-    --install=mesa-va-drivers-freeworld \
-    --install=mesa-vdpau-drivers-freeworld
-
-# x86_64 only
-if [[ "$(rpm -E '%{_arch}')" == "x86_64" ]]; then
-    rpm-ostree install steam-devices
-    rpm-ostree install intel-media-driver libva-intel-driver
-fi
+    --install mesa-va-drivers-freeworld \
+    --install mesa-vdpau-drivers-freeworld
 
 # Package installation
 PACKAGES_TO_INSTALL=(
@@ -68,6 +62,8 @@ PACKAGES_TO_INSTALL=(
     "libva-utils"
     "pipewire-codec-aptx"
     "vulkan"
+    "intel-media-driver"
+    "libva-intel-driver"
 
     # Virtualisation & containers
     "cloud-utils"
@@ -85,8 +81,8 @@ PACKAGES_TO_INSTALL=(
     "gnome-tweaks"
 
     # Extras
-    "flameshot"
     "python3-psutil"
+    "steam-devices"
 
     # Logitech unifying
     "solaar"
@@ -107,7 +103,7 @@ systemctl enable nix.mount
 # Enable sockets
 systemctl enable docker.socket libvirtd.socket
 
-# Required only if we install new system fonts
+# Required only when installing new system fonts
 # fc-cache --system-only --really-force --verbose
 
 # Disable repos (the sed command replaces the first match only)
