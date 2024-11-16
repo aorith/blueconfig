@@ -16,6 +16,7 @@ RUN cp -pr /home/nix/.local/state/nix/profiles/profile-1-link /nix/var/nix/profi
 FROM ghcr.io/aorith/blueconfig:stable
 
 COPY --from=builder --chown=1000:1000 /nix /usr/share/nix
+COPY rootfs-nix /
 
 RUN systemctl enable nix.mount \
     && rpm-ostree cleanup --repomd \
