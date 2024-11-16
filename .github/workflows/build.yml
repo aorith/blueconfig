@@ -31,13 +31,16 @@ jobs:
       id-token: write
     strategy:
       max-parallel: 1
+      # When set to true, GitHub cancels all in-progress jobs if any matrix job fails.
+      fail-fast: true
       matrix:
+        variant: ["stable", "nix"]
+        major_version: [41]
+
         include:
         - variant: "stable"
-          major_version: 41
           container_file: "Containerfile"
         - variant: "nix"
-          major_version: 41
           container_file: "Containerfile-nix"
 
     steps:
