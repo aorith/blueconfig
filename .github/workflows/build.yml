@@ -36,6 +36,9 @@ jobs:
         - variant: "stable"
           major_version: 41
           container_file: "Containerfile"
+        - variant: "nix"
+          major_version: 41
+          container_file: "Containerfile-nix"
 
     steps:
     - name: Checkout
