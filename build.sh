@@ -98,7 +98,6 @@ systemctl enable flatpak-replace-fedora-apps.service
 systemctl enable flatpak-system-update.timer
 systemctl enable rpm-ostreed-automatic.timer
 systemctl enable rpm-ostree-countme.timer
-systemctl enable nix.mount
 
 # Enable sockets
 systemctl enable docker.socket libvirtd.socket
@@ -109,7 +108,3 @@ systemctl enable docker.socket libvirtd.socket
 # Disable repos (the sed command replaces the first match only)
 sed -i '0,/enabled=.*/s//enabled=0/' /etc/yum.repos.d/fedora-cisco-openh264.repo
 find /etc/yum.repos.d/ -type f -name "*fusion*.repo" -exec sed -i '0,/enabled=.*/s//enabled=0/' {} \;
-
-rm -rf /tmp/*
-rpm-ostree cleanup --repomd
-ostree container commit
