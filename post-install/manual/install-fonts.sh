@@ -4,7 +4,7 @@ set -eu -o pipefail
 install_nerd_font() {
     local VER="$1" # 3.1.1
     local FN="$2"  # Hack
-    echo "Installing '$FN' on verson '$VER'..."
+    echo "Installing '$FN' on version '$VER'..."
 
     BASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v${VER}/${FN}.tar.xz"
 
@@ -44,8 +44,9 @@ install_nerd_font "$NERD_VER" NerdFontsSymbolsOnly
 install_nerd_font "$NERD_VER" SourceCodePro
 install_nerd_font "$NERD_VER" Recursive
 install_nerd_font "$NERD_VER" Meslo
+install_nerd_font "$NERD_VER" IosevkaTerm
 
-install_iosevka_font 31.6.1 Iosevka
-install_iosevka_font 31.6.1 IosevkaFixed
+# install_iosevka_font 31.6.1 Iosevka
+# install_iosevka_font 31.6.1 IosevkaFixed
 
-install_from_url Ubuntu "https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip"
+# install_from_url Ubuntu "https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip"

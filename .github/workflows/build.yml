@@ -101,9 +101,9 @@ jobs:
         registry: ${{ env.IMAGE_REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ github.token }}
-#       extra-args: |
-#         --compression-format=zstd:chunked
-#         --compression-level=19
+        extra-args: |
+          --compression-format=zstd
+          --compression-level=9
 
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v3
