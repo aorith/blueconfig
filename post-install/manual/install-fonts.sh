@@ -35,7 +35,7 @@ install_from_url() {
     rm -f "/tmp/${fn}.zip"
 }
 
-NERD_VER=3.2.1
+NERD_VER=3.3.0
 
 install_nerd_font "$NERD_VER" Hack
 install_nerd_font "$NERD_VER" JetBrainsMono
