@@ -1,5 +1,5 @@
 ARG UPSTREAM_IMAGE="${UPSTREAM_IMAGE:-quay.io/fedora-ostree-desktops/silverblue}"
-ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-latest}"
+ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-42}"
 
 FROM ${UPSTREAM_IMAGE}:${FEDORA_MAJOR_VERSION}
 
@@ -15,5 +15,5 @@ COPY build.sh /tmp/build.sh
 
 RUN bash /tmp/build.sh
 RUN rm -rf /tmp/* \
-    && rpm-ostree cleanup --repomd \
+    && dnf clean all \
     && ostree container commit
