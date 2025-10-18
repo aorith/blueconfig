@@ -1,3 +1,7 @@
+FROM scratch AS ctx
+
+COPY scripts /scripts
+
 ARG UPSTREAM_IMAGE="${UPSTREAM_IMAGE:-quay.io/fedora-ostree-desktops/silverblue}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-42}"
 
@@ -8,12 +12,21 @@ LABEL org.opencontainers.image.description="Customized Fedora Silverblue (Blueco
 LABEL org.opencontainers.image.source="https://github.com/aorith/blueconfig"
 LABEL org.opencontainers.image.licenses="MIT"
 
-RUN sed -i "s,^PRETTY_NAME=.*,PRETTY_NAME=\"Fedora Linux $(rpm -E %fedora) \(Blueconfig\)\"," /usr/lib/os-release
-
 COPY rootfs /
-COPY build.sh /tmp/build.sh
 
-RUN bash /tmp/build.sh
-RUN rm -rf /tmp/* \
-    && dnf clean all \
-    && ostree container commit
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=tmpfs,dst=/var \
+    --mount=type=tmpfs,dst=/tmp \
+    /ctx/scripts/01-init.sh
+
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=tmpfs,dst=/var \
+    --mount=type=tmpfs,dst=/tmp \
+    /ctx/scripts/02-packages.sh
+
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=tmpfs,dst=/var \
+    --mount=type=tmpfs,dst=/tmp \
+    /ctx/scripts/03-finish.sh
+
+RUN rm -rf /var/* && bootc container lint

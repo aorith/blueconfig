@@ -40,8 +40,6 @@ jobs:
         include:
           - variant: "stable"
             container_file: "Containerfile"
-          # - variant: "nix"
-          #   container_file: "Containerfile-nix"
 
     steps:
       - name: Checkout
