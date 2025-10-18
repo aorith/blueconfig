@@ -15,7 +15,7 @@ To rebase an existing Silverblue/Kinoite machine to the latest release:
 1. Open a terminal and use one of the following commands to rebase the OS:
 
 ```
-sudo bootc switch ostree-unverified-registry:ghcr.io/aorith/blueconfig:stable
+sudo bootc switch ghcr.io/aorith/blueconfig:stable
 ```
 
 Check [post-install](post-install) for the _post-install_ instructions.
@@ -54,5 +54,5 @@ insecure = true
 Then rebase:
 
 ```sh
-sudo bootc switch ostree-unverified-registry:HOST_IP:5000/blueconfig:latest
+sudo bootc switch HOST_IP:5000/blueconfig:latest
 ```
