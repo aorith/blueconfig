@@ -46,6 +46,8 @@ PACKAGES_TO_INSTALL=(
     "libvirt-daemon-config-network"
     "libvirt-daemon-kvm"
     "qemu-kvm"
+    # Sometimes used as a vm
+    "qemu-guest-agent"
     "virt-install"
     "virt-manager"
     "virt-top"

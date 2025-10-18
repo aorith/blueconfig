@@ -12,25 +12,17 @@ common_user:
 # --------------------------------------------------
 run_filesystem_role: true
 
-filesystem_folders:
-- {path: "/mnt/storage", owner: 'root', group: 'root', mode: '0775'}
-- {path: "/mnt/storage/tank", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775'}
-- {path: "/mnt/storage/disk1", owner: "{{ common_user.name }}", group: "{{ common_user.name }}", mode: '0775'}
+filesystem_folders: []
 
 # dump: (backups) see 'man dump 8'
 # passno: see 'man fsck 8' it's the order for fsck, usually root is 0 and the rest is 2
-filesystem_mounts:
-- {src: "LABEL=TANK", path: "/mnt/storage/tank", fstype: "btrfs", opts: "defaults,compress=zstd:1", state: "mounted", dump: '0', passno: '0'}
-- {src: "LABEL=DISK1", path: "/mnt/storage/disk1", fstype: "ext4", opts: "defaults,noatime", state: "mounted", dump: '0', passno: '2'}
+ilesystem_mounts: []
 
-filesystem_symlinks:
-- {link_src: "/mnt/storage", dest: "/var/home/aorith/storage"}
-- {link_src: "/mnt/storage/tank/data/syncthing", dest: "/var/home/aorith/Syncthing"}
-- {link_src: "/mnt/storage/tank/work-in-progress", dest: "/var/home/aorith/work-in-progress"}
+filesystem_symlinks: []
 
 # Systemd role
 # --------------------------------------------------
-run_systemd_role: true
+run_systemd_role: false
 
 systemd_user:
   files: []
@@ -41,10 +33,9 @@ systemd_user:
     enable: true
 
 systemd_system:
-  wake_on_lan:
-  - {name: "enp8s0", macaddr: "a8:5e:45:b3:10:95",}
+  wake_on_lan: []
 
 systemd_disable_sleep:
-  enable: true
+  enable: false
 
 # vim:ft=yaml.ansible:

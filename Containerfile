@@ -1,9 +1,8 @@
-FROM scratch AS ctx
-
-COPY scripts /scripts
-
 ARG UPSTREAM_IMAGE="${UPSTREAM_IMAGE:-quay.io/fedora-ostree-desktops/silverblue}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-42}"
+
+FROM scratch AS ctx
+COPY scripts /scripts
 
 FROM ${UPSTREAM_IMAGE}:${FEDORA_MAJOR_VERSION}
 
