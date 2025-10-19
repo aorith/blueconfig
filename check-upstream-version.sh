@@ -9,27 +9,18 @@ if [[ -z "$current_image" ]] || [[ -z "$upstream_image" ]]; then
     echo "Missing required parameters, this won't work." >&2
 fi
 
-# This doesn't work anymore since they're not including the date with the version
-# current_version=$(skopeo inspect "docker://${current_image}" | jq -r '.Labels.version')
-# upstream_version=$(skopeo inspect "docker://${upstream_image}" | jq -r '.Labels.version')
-#
-# if [[ "$current_version" == "$upstream_version" ]]; then
-#     echo "Rebuild not required. (current: $current_version, upstream: $upstream_version"
-#     exit 1
-# else
-#     echo "Upstream has a new version. (current: $current_version, upstream: $upstream_version"
-#     exit 0
-# fi
+check_version() {
+    local image="$1"
+    skopeo inspect "docker://${image}" | jq -r '.Labels."org.opencontainers.image.version"'
+}
 
-current_date=$(skopeo inspect "docker://${current_image}" | jq -r '.Created')
-upstream_date=$(skopeo inspect "docker://${upstream_image}" | jq -r '.Created')
-current_timestamp=$(date --date "$current_date" +%s)
-upstream_timestamp=$(date --date "$upstream_date" +%s)
+current_version=$(check_version "$current_image")
+upstream_version=$(check_version "$upstream_image")
 
-if ((current_timestamp < upstream_timestamp)); then
-    echo "Upstream has a new version. (current: $current_date, upstream: $upstream_date"
+if [[ "$current_version" != "$upstream_version" ]]; then
+    echo "Upstream has a new version. (current: $current_version, upstream: $upstream_version)"
     exit 0
 else
-    echo "Rebuild not required. (current: $current_date, upstream: $upstream_date"
+    echo "Rebuild not required. (current: $current_version, upstream: $upstream_version)"
     exit 1
 fi
