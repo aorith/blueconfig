@@ -81,6 +81,7 @@ jobs:
           containerfiles: |
             ./${{ matrix.container_file }}
           tags: |
+            ${{ matrix.major_version }}
             ${{ matrix.variant }}
           build-args: |
             UPSTREAM_IMAGE=${{ env.UPSTREAM_IMAGE }}
