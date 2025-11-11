@@ -63,14 +63,6 @@ jobs:
               echo "continue=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Generate variables
-        if: steps.check-new-version.outputs.continue == 'true'
-        id: generate-vars
-        shell: bash
-        run: |
-          # Shown in rpm-ostree status
-          echo "version=${{ matrix.major_version }}.$(date +%Y%m%d).$(date +%H)" >> "$GITHUB_OUTPUT"
-
       # Build image using Buildah action
       - name: Build Image
         if: steps.check-new-version.outputs.continue == 'true'
@@ -86,7 +78,6 @@ jobs:
           build-args: |
             UPSTREAM_IMAGE=${{ env.UPSTREAM_IMAGE }}
             FEDORA_MAJOR_VERSION=${{ matrix.major_version }}
-            VERSION=VERSION=${{ steps.generate-vars.outputs.version }}
           layers: false
           oci: true
 
