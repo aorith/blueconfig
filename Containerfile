@@ -10,6 +10,7 @@ LABEL org.opencontainers.image.title="Fedora Silverblue"
 LABEL org.opencontainers.image.description="Customized Fedora Silverblue (Blueconfig)"
 LABEL org.opencontainers.image.source="https://github.com/aorith/blueconfig"
 LABEL org.opencontainers.image.licenses="MIT"
+LABEL containers.bootc="1"
 
 COPY rootfs /
 
