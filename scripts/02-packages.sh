@@ -11,10 +11,6 @@ dnf install --allowerasing -y openh264 \
     gstreamer1-plugins-ugly \
     gstreamer1-vaapi
 
-dnf install --allowerasing -y \
-    mesa-va-drivers-freeworld \
-    mesa-vdpau-drivers-freeworld
-
 # Package installation
 PACKAGES_TO_INSTALL=(
     # Desktop
