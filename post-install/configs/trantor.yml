@@ -16,7 +16,7 @@ filesystem_folders: []
 
 # dump: (backups) see 'man dump 8'
 # passno: see 'man fsck 8' it's the order for fsck, usually root is 0 and the rest is 2
-ilesystem_mounts: []
+filesystem_mounts: []
 
 filesystem_symlinks: []
 
