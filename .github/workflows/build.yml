@@ -35,7 +35,7 @@ jobs:
       # When set to true, GitHub cancels all in-progress jobs if any matrix job fails.
       fail-fast: true
       matrix:
-        major_version: ["43"]
+        major_version: ["44"]
 
         include:
           - variant: "stable"
