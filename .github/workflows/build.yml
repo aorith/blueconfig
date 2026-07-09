@@ -96,7 +96,7 @@ jobs:
             --compression-format=zstd
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         if: github.event_name != 'pull_request' && steps.check-new-version.outputs.continue == 'true'
         with:
           registry: ghcr.io
